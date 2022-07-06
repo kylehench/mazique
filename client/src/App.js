@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-import LogReg from "./views/LogReg"
-import UserList from './views/UserList'
-import LoginForm from './views/LoginForm'
+import Songs from "./views/Songs"
+import Dashboard from './views/Dashboard'
+import SongsNew from './views/SongsNew'
+// import UserList from './views/UserList'
+// import LoginForm from './views/LoginForm'
 
 
 function App() {
@@ -22,19 +24,14 @@ function App() {
   }
   
   return (
-    <div className='container mt-2'>
-      <div className="d-flex justify-content-between">
-        <h2>MERN Users</h2>
-        <button onClick={logout} className='btn btn-secondary'>Logout</button>
-      </div>
+    <div>
       <Routes>
-        <Route path="/" element={<LogReg />} />
-        <Route path="/users" element={<UserList />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/songs" element={<Songs />} />
+        <Route path="/songs/new" element={<SongsNew />} />
+        {/* <Route path="/users" element={<UserList />} />
+        <Route path="/login" element={<LoginForm />} /> */}
       </Routes>
-      <div className='mt-2'>
-        <Link to='/users'>Get Users List</Link>
-      </div>
     </div>
   );
 }

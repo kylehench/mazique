@@ -14,5 +14,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))   // This allows JSON Objects with strings and arrays
 
 require('./routes/user.routes')(app)
+require('./routes/song.routes')(app)
 const port = 8000
 app.listen(port, () => console.log(`Listening on port: ${port}`))

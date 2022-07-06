@@ -21,22 +21,6 @@ module.exports.register = async(req, res) => {
     res.status(400).json(err)
   }
 }
-// // registration
-// module.exports.register = (req, res) => {
-//   console.log(req.body)
-//   User.create(req.body)
-//     .then(user => {
-//       const userToken = jwt.sign({
-//         id: user._id
-//       }, process.env.SECRET_KEY)
-
-//       res.cookie("usertoken", userToken, process.env.SECRET_KEY, {
-//         httpOnly: true
-//       })
-//       .json({ msg: "success!", user: user })
-//     })
-//     .catch(err => res.status(400).json(err))
-// }
 
 // login
 module.exports.login = async(req, res) => {
