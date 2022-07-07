@@ -9,6 +9,10 @@ const SongSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  genre: {
+    type: String,
+    required: false
+  },
   tempo: {
     type: Number,
     required: false

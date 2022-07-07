@@ -1,23 +1,56 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 
 const Songs = () => {
   const navigate = useNavigate()
+  const [songs, setSongs] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/songs')
+      .then(res => setSongs(res.data))
+      .catch(err => console.log(err))
+    },[])
+    
+  const deleteSong = (_id) => {
+    axios.delete(`http://localhost:8000/api/songs/${_id}`)
+      .then(res => setSongs(songs.filter(song => song._id!==_id)))
+      .catch(err => console.log(err))
+  }
   
   return (
     <div className='container mt-2'>
       <div className="d-flex justify-content-between">
         <h2>Songs I Want to Learn</h2>
-        <button className='btn btn-primary' onClick={() => navigate('/songs/new')}>Add Song</button>
+        <div>
+          <button className='btn btn-secondary' onClick={() => navigate('/')}>Home</button>
+        </div>
       </div>
       <table className="table">
         <tbody>
           <tr>
             <th>Name</th>
+            <th>Composer</th>
+            <th>Genre</th>
             <th>Actions</th>
           </tr>
+          {songs.map(song => <tr key={song._id}>
+            <td>{song.title}</td>
+            <td>{song.composer}</td>
+            <td>{song.genre}</td>
+            <td>
+              <button className='btn btn-sm btn-secondary me-2'>
+                <Link to={`/songs/${song._id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Details</Link>
+              </button>
+              <button className='btn btn-sm btn-warning me-2'>
+                <Link to={`/songs/${song._id}/edit`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Edit</Link>
+              </button>
+              <button className='btn btn-sm btn-danger' onClick={() => deleteSong(song._id)}>Delete</button>
+            </td>
+          </tr>)}
         </tbody>
       </table>
+      <button className='btn btn-primary' onClick={() => navigate('/songs/new')}>Add Song</button>
     </div>
   )
 }

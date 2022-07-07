@@ -1,4 +1,4 @@
-const userController = require('../controllers/song.controllers')
+const SongController = require('../controllers/song.controllers')
 
 module.exports = app => {
   // create song
@@ -15,7 +15,4 @@ module.exports = app => {
   
   // delete song
   app.delete('/api/songs/:_id', SongController.deleteSong)
-  
-  // like song
-  app.post('/api/songs/:_id/like', SongController.likeSong)
 }

@@ -3,8 +3,8 @@ const Song = require('../models/song.model')
 module.exports.createSong = async(request, response) => {
   // check that song name is unique
   try {
-    const songs = await Song.find({name: request.body.name})
-    if (songs.length!==0) return response.status(400).json( {errors: {name: {message: 'Song name already taken'}}})
+    const songs = await Song.find({title: request.body.title})
+    if (songs.length!==0) return response.status(400).json( {errors: {title: {message: 'Song title already taken'}}})
     const song = await Song.create(request.body)
     response.json(song)
   } catch(err) {
@@ -25,10 +25,10 @@ module.exports.readOneSong = (request, response) => {
 }
 
 module.exports.updateSong = async(request, response) => {
-  // check that song name is unique (except for one with same id)
+  // check that song title is unique (except for one with same id)
   try {
-    const songs = await Song.find({name: request.body.name})
-    if (songs.length===1 && songs[0]._id!=request.body._id) return response.status(400).json( {errors: {name: {message: 'Song name already taken'}}})
+    const songs = await Song.find({title: request.body.title})
+    if (songs.length===1 && songs[0]._id!=request.body._id) return response.status(400).json( {errors: {title: {message: 'Song title already taken'}}})
     const song = await Song.findOneAndUpdate({_id: request.params._id}, request.body, {new: true, runValidators: true})
     response.json(song)
   } catch(err) {
