@@ -19,7 +19,7 @@ const Songs = () => {
   }
   
   return (
-    <div className='container mt-2'>
+    <div className='container mt-4'>
       <div className="d-flex justify-content-between">
         <h2>Songs I Want to Learn</h2>
         <div>

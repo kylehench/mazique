@@ -18,7 +18,7 @@ const SongsNew = () => {
   }
 
   return (
-    <div className='container mt-2'>
+    <div className='container mt-4'>
       <div className="d-flex justify-content-between mb-2">
         <h2>Add a new song</h2>
         <div>

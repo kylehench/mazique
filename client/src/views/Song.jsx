@@ -14,7 +14,7 @@ const Song = () => {
   }, [])
 
   return (
-    <div className='container mt-2'>
+    <div className='container mt-4'>
       {song.title !== undefined && <>
         <div className="d-flex justify-content-between">
           <h2>Song: {song.title}</h2>

@@ -34,7 +34,7 @@ const SongForm = (props) => {
 
         </div>
       </div>
-      <div>
+      <div className="mt-2">
         <input type="submit" value={submitText} className="btn btn-primary" />
       </div>
     </form>
