@@ -26,7 +26,7 @@ const ScoreEdit = () => {
             type: 'quarter',
             pitch: {
               step: 'D',
-              alter: 0,
+              alter: 1,
               octave: 4,
             },
           },

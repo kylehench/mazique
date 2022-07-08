@@ -22,13 +22,13 @@ const Note = (props) => {
     }
     for (let i = 6*step/Math.abs(step); Math.abs(i) <= Math.abs(step); i+=change) {
       arr.push(
-        <polyline key={i} className="LedgerLine" fill="none" stroke={color} strokeWidth="3.97" strokeLinejoin="bevel" points={`${513.182+x},${435.827-i*12.4016+y} ${562.78+x},${435.827-i*12.4016+y}`} />
+        <polyline key={i} className="LedgerLine" fill="none" stroke={color} strokeWidth="3.97" strokeLinejoin="bevel" points={`${513.182+x},${435.827-i*12.4016+y} ${561.78+x},${435.827-i*12.4016+y}`} />
       )
     }
     return arr
   }
 
-  const accidental = () => {
+  const renderAccidental = () => {
     if (note.pitch.alter===1) return <path
       className="Accidental"
       style={{fill: color}}
@@ -48,12 +48,21 @@ const Note = (props) => {
       transform={`matrix(0.992126,0,0,0.992126,${491+x},${435.827-step*12.4016+y})`} d="M20.0938,-7.90625 C19.5,-11.7969 17.0938,-15.5 12,-15.5 C7,-15.5 4.09375,-12.4063 3.59375,-11.7969 L4,-43.9063 C4,-44.7031 3.40625,-45.2969 2.59375,-45.2969 L1.40625,-45.2969 C0.59375,-45.2969 0,-44.7031 0,-43.9063 L0.5,16.2031 C0.5,17 1.09375,17.5938 1.90625,17.5938 C2.09375,17.5938 2.5,17.5 2.70313,17.4063 C3.09375,17.2031 9.59375,14 15,7.90625 C18.7969,3.59375 20.2969,-1.29688 20.2969,-5.40625 C20.2969,-6.29688 20.2031,-7.09375 20.0938,-7.90625 M13.2031,-4 C13.2031,-2.5 12.7969,2.09375 10.2969,5.90625 C8.59375,8.5 5.20313,11.2031 3.29688,12.7031 L3.59375,-6.79688 C3.79688,-7.70313 5.29688,-10.5938 9.29688,-10.5938 C12.9063,-10.5938 13.2031,-7.20313 13.2031,-5.09375 L13.2031,-4"
     />
   }
+
+  const renderDot = () => {
+    let dotYOffset = 0
+    if (Math.abs(step)<5 && step%2===0) dotYOffset = -12.4014
+    return <path className="NoteDot" transform={`matrix(0.992126,0,0,0.992126,${566.106+x},${435.8264-step*12.4016+y+dotYOffset})`} d="M0,0 C0,2.76563 2.23438,5 5,5 C7.76563,5 10,2.76563 10,0 C10,-2.76563 7.76563,-5 5,-5 C2.23438,-5 0,-2.76563 0,0"/>
+  }
+  
   
   return (
     <a href="#"
       onFocus={()=>setColor('blue')}
       onBlur={()=>setColor('black')}
     >
+
+      {/* render note */}
       {type==='quarter' &&
         <path
           className="Note"
@@ -99,8 +108,10 @@ const Note = (props) => {
       {ledgerLines().map(item => item)}
 
       {/* render accidental if present */}
-      {Math.abs(note.pitch.alter)!==undefined && accidental()}
+      {Math.abs(note.pitch.alter)!==undefined && renderAccidental()}
 
+      {/* render augmentation dot if present */}
+      {note.dot!==undefined && renderDot()}
     </a>
   )
 }
