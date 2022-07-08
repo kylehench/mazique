@@ -1,10 +1,16 @@
 import React from 'react'
-import StaffLines from './StaffLines'
 import Clef from './Clef'
 import TimeSig from './TimeSig'
+import Note from './Note'
 
 const Measure = (props) => {
   const { measure } = props
+
+  const render = () => {
+    const arr = []
+
+    return arr
+  }
   
   return (
     <>
@@ -14,6 +20,8 @@ const Measure = (props) => {
       {measure.timeSig !== undefined &&
         <TimeSig x={measure.x} y={measure.y} type={measure.timeSig.type} />
       }
+      
+      <Note x={0} y={0} step={0} type={'half'} />
     </>
   )
 }

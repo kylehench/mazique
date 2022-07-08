@@ -11,9 +11,17 @@ const ScoreEdit = () => {
   const positionElements = () => {
     let measures = [
       { number:1,x:0,y:0,width:200,
-        clef:{type: 'treble'},
+        clef:{type: 'bass'},
         timeSig:{type: '6/8'},
         notes: [
+          {
+            type: 'quarter',
+            pitch: {
+              step: 'D',
+              alter: 0,
+              octave: 4,
+            },
+          },
           {
             type: 'quarter',
             pitch: {
@@ -32,7 +40,13 @@ const ScoreEdit = () => {
     let line = 0
 
     let clef = ''
-    measures = measures.map(measure => ({hi:'hi',...measure, }))
+    measures = measures.map(measure => {
+      if (measure.clef !== undefined) { let clef = measure.clef }
+
+      return {
+          ...measure,
+        }
+      })
     console.log(measures)
 
 
