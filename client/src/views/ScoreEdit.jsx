@@ -1,31 +1,34 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import positionNotes from '../util/PositionNotes'
+import positionElements from '../util/PositionElements'
 import Score from '../components/score/Score'
 
 const ScoreEdit = () => {
   const [zoom, setZoom] = useState(100)
   const [measures, setMeasures] = useState([])
-  const [staves, setStaves] = useState([{x:0, y:0, width:2764}])
+  const [symbols, setSymbols] = useState([])
+  const [staves, setStaves] = useState([{x:0, y:0, width:2400}])
 
-  const positionElements = () => {
+  const getMusic = () => {
     let measures = [
-      { number:1,x:0,y:0,width:200,
-        clef:{type: 'treble'},
-        timeSig:{type: '3/4'},
+      { number:1,
+        loc: {x: 0, y: 0, width: 200},
+        clef:{sign: 'treble'},
+        timeSig:{beats: 2, beatsType: 4},
         notes: [
-          {
-            type: 'half',
-            pitch: {
-              step: 'D',
-              alter: 0,
-              octave: 4,
-            },
-          },
           {
             type: 'quarter',
             pitch: {
               step: 'D',
+              // alter: 0,
+              octave: 4,
+            },
+            dot: 1,
+          },
+          {
+            type: 'quarter',
+            pitch: {
+              step: 'F',
               alter: 1,
               octave: 4,
             },
@@ -37,12 +40,29 @@ const ScoreEdit = () => {
               step: 'D',
               // alter: 0,
               octave: 4,
-            },
-            dot: 1
+            }
           },
         ]
       },
-      // {number:2,x:250,y:0,width:200, notes: []}
+      {number:2,x:250,y:0,width:200,
+        notes: [
+        {
+          type: 'half',
+          pitch: {
+            step: 'D',
+            // alter: 0,
+            octave: 4,
+          },
+        },
+        {
+          type: 'half',
+          pitch: {
+            step: 'E',
+            // alter: 0,
+            octave: 4,
+          },
+        },
+      ]}
     ]
 
     // compute positions
@@ -50,21 +70,15 @@ const ScoreEdit = () => {
     let line = 0
     let firstInLine = true
 
-    let clef = ''
-    measures = measures.map(measure => {
-      if (measure.clef !== undefined) { let clef = measure.clef }
-
-      return {
-          ...measure,
-        }
-      })
-    
-    // setMeasures(measures)
-    setMeasures(positionNotes(measures))
+    // position all elements
+    const elements = positionElements(measures)
+    setMeasures(elements.measures)
+    setStaves(elements.staves)
+    setSymbols(elements.symbols)
   }
 
   useEffect(() => {
-    positionElements()
+    getMusic()
   },[])
   
   return (
@@ -75,7 +89,7 @@ const ScoreEdit = () => {
         <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
           <div style={{width: '100%', padding:'20px 25px'}}>
             <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
-              <Score measures={measures} staves={staves} />
+              <Score measures={measures} staves={staves} symbols={symbols} />
             </div>
           </div>
         </div>

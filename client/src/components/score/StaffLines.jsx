@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 
 const StaffLines = (props) => {
   // const [xEnd, setXEnd] = useState(2764)
-  const { x, y, width } = props
+  const { staff } = props
+  const { x, y, width } = staff
   
   return (
     <>

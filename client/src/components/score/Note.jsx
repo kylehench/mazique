@@ -2,19 +2,21 @@ import React from 'react'
 import { useState } from 'react'
 
 const Note = (props) => {
-  const { x, y, note } = props
+  const { note } = props
+  const { x, y } = note.loc
   const type = note.type
   const step = (note.pitch.step.toLowerCase().charCodeAt(0)-100)+(7*(note.pitch.octave-4))
   const [color, setColor] = useState('black')
 
   const ledgerLines = () => {
     const arr = []
+    let start, change
     if (step > 5) {
-      var start = 6
-      var change = 2
+      start = 6
+      change = 2
     } else if (step < -5) {
-      var start = -6
-      var change = -2
+      start = -6
+      change = -2
     } else {
       return []
     }
