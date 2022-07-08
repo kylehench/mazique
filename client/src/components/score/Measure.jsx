@@ -21,7 +21,18 @@ const Measure = (props) => {
         <TimeSig x={measure.x} y={measure.y} type={measure.timeSig.type} />
       }
       
-      <Note x={0} y={0} step={0} type={'half'} />
+      <Note x={20} y={0} step={10} type={'half'} 
+        note={
+          {
+            type: 'quarter',
+            pitch: {
+              step: 'D',
+              // alter: 0,
+              octave: 4,
+            },
+          }
+        }
+      />
     </>
   )
 }

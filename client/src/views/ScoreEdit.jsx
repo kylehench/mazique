@@ -36,8 +36,9 @@ const ScoreEdit = () => {
     ]
 
     // compute positions
-    let prevX = 0 // last/ending horizontal position
+    let x = 0 // last/ending horizontal position
     let line = 0
+    let firstInLine = true
 
     let clef = ''
     measures = measures.map(measure => {
@@ -47,7 +48,6 @@ const ScoreEdit = () => {
           ...measure,
         }
       })
-    console.log(measures)
 
 
     setMeasures(measures)

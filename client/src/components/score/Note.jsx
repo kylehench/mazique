@@ -2,7 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 
 const Note = (props) => {
-  const { x, y, type, step } = props
+  const { x, y, note } = props
+  const type = note.type
+  const step = (note.pitch.step.toLowerCase().charCodeAt(0)-100)+(7*(note.pitch.octave-4))
   const [color, setColor] = useState('black')
 
   const tmp = 10
@@ -20,14 +22,31 @@ const Note = (props) => {
     }
     for (let i = 6*step/Math.abs(step); Math.abs(i) <= Math.abs(step); i+=change) {
       arr.push(
-        <polyline className="LedgerLine" fill="none" stroke={color} strokeWidth="3.97" strokeLinejoin="bevel" points={`${513.182+x},${435.827-i*12.4016+y} ${562.78+x},${435.827-i*12.4016+y}`} />
+        <polyline key={i} className="LedgerLine" fill="none" stroke={color} strokeWidth="3.97" strokeLinejoin="bevel" points={`${513.182+x},${435.827-i*12.4016+y} ${562.78+x},${435.827-i*12.4016+y}`} />
       )
     }
     return arr
   }
 
   const accidental = () => {
-    
+    if (note.pitch.alter===1) return <path
+      className="Accidental"
+      style={{fill: color}}
+      onClick={()=>setColor('blue')}
+      transform={`matrix(0.992126,0,0,0.992126,${491+x},${435.827-step*12.4016+y})`} d="M23.2969,-10.5938 C23.9063,-10.7031 24.4063,-11.4063 24.4063,-12 L24.4063,-17.9063 C24.4063,-18.7031 23.7969,-19.2969 23,-19.2969 L22.7969,-19.2969 L19.5,-18.5938 L19.5,-33.5 L16.7031,-33.5 L16.7031,-18 L7.79688,-16.2031 L7.79688,-30.2969 L5,-30.2969 L5,-15.5938 L1.09375,-14.7969 C0.5,-14.7031 0,-14 0,-13.4063 L0,-13.2031 L0,-7.40625 L0,-7.59375 C0,-6.79688 0.59375,-6.20313 1.40625,-6.20313 L1.70313,-6.20313 L5,-6.90625 L5,9.59375 L1.09375,10.4063 C0.5,10.5 0,11.2031 0,11.7969 L0,17.5938 C0,18.4063 0.59375,19 1.40625,19 L1.70313,19 L5,18.2969 L5,33.2031 L7.79688,33.2031 L7.79688,17.7031 L16.7031,15.9063 L16.7031,30 L19.5,30 L19.5,15.2969 L23.2969,14.5938 C23.9063,14.5 24.4063,13.7969 24.4063,13.2031 L24.4063,7.29688 C24.4063,6.5 23.7969,5.90625 23,5.90625 L22.7969,5.90625 L19.5,6.59375 L19.5,-9.90625 L23.2969,-10.5938 M7.79688,9.09375 L7.79688,-7.5 L16.7031,-9.29688 L16.7031,7.20313 L7.79688,9.09375"
+    />
+    if (note.pitch.alter===0) return <path
+      className="Accidental"
+      style={{fill: color}}
+      onClick={()=>setColor('blue')}
+      transform={`matrix(0.992126,0,0,0.992126,${491+x},${435.827-step*12.4016+y})`} d="M16.5938,-18.2969 C16.4063,-18.5 16.0938,-18.5938 15.7969,-18.5938 C15.7031,-18.5938 15.5,-18.5 15.4063,-18.5 L2.79688,-15 L2.79688,-32.5 L0,-32.5 L0,17 C0,17.7969 0.59375,18.2969 1.40625,18.2969 L1.79688,18.2969 L14.4063,14.7969 L14.4063,32.2969 L17.0938,32.2969 L17.0938,-17.2031 C17.0938,-17.5938 16.9063,-18.0938 16.5938,-18.2969 M14.4063,6.5 L2.79688,9.70313 L2.79688,-6.70313 L14.4063,-10 L14.4063,6.5"
+    />
+    if (note.pitch.alter===-1) return <path
+      className="Accidental"
+      style={{fill: color}}
+      onClick={()=>setColor('blue')}
+      transform={`matrix(0.992126,0,0,0.992126,${491+x},${435.827-step*12.4016+y})`} d="M20.0938,-7.90625 C19.5,-11.7969 17.0938,-15.5 12,-15.5 C7,-15.5 4.09375,-12.4063 3.59375,-11.7969 L4,-43.9063 C4,-44.7031 3.40625,-45.2969 2.59375,-45.2969 L1.40625,-45.2969 C0.59375,-45.2969 0,-44.7031 0,-43.9063 L0.5,16.2031 C0.5,17 1.09375,17.5938 1.90625,17.5938 C2.09375,17.5938 2.5,17.5 2.70313,17.4063 C3.09375,17.2031 9.59375,14 15,7.90625 C18.7969,3.59375 20.2969,-1.29688 20.2969,-5.40625 C20.2969,-6.29688 20.2031,-7.09375 20.0938,-7.90625 M13.2031,-4 C13.2031,-2.5 12.7969,2.09375 10.2969,5.90625 C8.59375,8.5 5.20313,11.2031 3.29688,12.7031 L3.59375,-6.79688 C3.79688,-7.70313 5.29688,-10.5938 9.29688,-10.5938 C12.9063,-10.5938 13.2031,-7.20313 13.2031,-5.09375 L13.2031,-4"
+    />
   }
   
   return (
@@ -71,15 +90,16 @@ const Note = (props) => {
       }
       {(step >= 0 && type!=='whole') &&
         // down stem
-        <polyline class="Stem"
+        <polyline className="Stem"
         onClick={()=>setColor('blue')}
-        fill="none" stroke={color} stroke-width="2.73" stroke-linejoin="bevel" points={`${523.223+x},${439.16-step*12.4016+y} ${523.223+x},${513.337-step*12.4016+y}`} />
+        fill="none" stroke={color} strokeWidth="2.73" strokeLinejoin="bevel" points={`${523.223+x},${439.16-step*12.4016+y} ${523.223+x},${513.337-step*12.4016+y}`} />
       }
 
       {/* render ledger line(s) if present */}
       {ledgerLines().map(item => item)}
 
       {/* render accidental if present */}
+      {Math.abs(note.pitch.alter)!==undefined && accidental()}
 
     </a>
   )
