@@ -4,13 +4,16 @@ import Clef from './Clef'
 import TimeSig from './TimeSig'
 
 const Measure = (props) => {
-  const { x, y, width } = props
+  const { measure } = props
   
   return (
     <>
-      <StaffLines x={x} y={y} width={width} />
-      <Clef x={x} y={y} type="bass" />
-      <TimeSig type="4/4" />
+      {measure.clef !== undefined &&
+        <Clef x={measure.x} y={measure.y} type={measure.clef.type} />
+      }
+      {measure.timeSig !== undefined &&
+        <TimeSig x={measure.x} y={measure.y} type={measure.timeSig.type} />
+      }
     </>
   )
 }

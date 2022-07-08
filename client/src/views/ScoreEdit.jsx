@@ -1,9 +1,47 @@
 import React from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import Score from '../components/score/Score'
 
 const ScoreEdit = () => {
   const [zoom, setZoom] = useState(100)
+  const [measures, setMeasures] = useState([])
+  const [staves, setStaves] = useState([{x:0, y:0, width:2764}])
+
+  const positionElements = () => {
+    let measures = [
+      { number:1,x:0,y:0,width:200,
+        clef:{type: 'treble'},
+        timeSig:{type: '6/8'},
+        notes: [
+          {
+            type: 'quarter',
+            pitch: {
+              step: 'D',
+              alter: 0,
+              octave: 4,
+            },
+          },
+        ]
+      },
+      {number:2,x:250,y:0,width:200}
+    ]
+
+    // compute positions
+    let prevX = 0 // last/ending horizontal position
+    let line = 0
+
+    let clef = ''
+    measures = measures.map(measure => ({hi:'hi',...measure, }))
+    console.log(measures)
+
+
+    setMeasures(measures)
+  }
+
+  useEffect(() => {
+    positionElements()
+  },[])
   
   return (
     <div className="d-flex flex-column" style={{height: '100vh'}}>
@@ -11,9 +49,9 @@ const ScoreEdit = () => {
       <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
         <div className="border" style={{width: '150px'}}>left</div>
         <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
-          <div style={{width: '100%'}}>
-            <div style={{margin:'0 auto', width:`${1200*zoom/100}px`, background: 'white'}}>
-              <Score />
+          <div style={{width: '100%', padding:'20px 25px'}}>
+            <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
+              <Score measures={measures} staves={staves} />
             </div>
           </div>
         </div>
@@ -24,9 +62,9 @@ const ScoreEdit = () => {
       <div className="border-top p-1" style={{}}>
         <div className="d-flex justify-content-end align-items-center">
           <label className="me-2">Zoom: {zoom}%</label>
-          <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+5)}>+</button>
-            <button type="button" class="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-5)}>-</button>
+          <div className="btn-group btn-sm" role="group" aria-label="Basic example">
+            <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+5)}>+</button>
+            <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-5)}>-</button>
           </div>
         </div>
       </div>
