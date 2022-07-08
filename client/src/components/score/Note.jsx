@@ -7,8 +7,6 @@ const Note = (props) => {
   const step = (note.pitch.step.toLowerCase().charCodeAt(0)-100)+(7*(note.pitch.octave-4))
   const [color, setColor] = useState('black')
 
-  const tmp = 10
-
   const ledgerLines = () => {
     const arr = []
     if (step > 5) {
@@ -52,7 +50,11 @@ const Note = (props) => {
   const renderDot = () => {
     let dotYOffset = 0
     if (Math.abs(step)<5 && step%2===0) dotYOffset = -12.4014
-    return <path className="NoteDot" transform={`matrix(0.992126,0,0,0.992126,${566.106+x},${435.8264-step*12.4016+y+dotYOffset})`} d="M0,0 C0,2.76563 2.23438,5 5,5 C7.76563,5 10,2.76563 10,0 C10,-2.76563 7.76563,-5 5,-5 C2.23438,-5 0,-2.76563 0,0"/>
+    return <path
+      className="NoteDot"
+      style={{fill: color}}
+      onClick={()=>setColor('blue')}
+      transform={`matrix(0.992126,0,0,0.992126,${566.106+x},${435.8264-step*12.4016+y+dotYOffset})`} d="M0,0 C0,2.76563 2.23438,5 5,5 C7.76563,5 10,2.76563 10,0 C10,-2.76563 7.76563,-5 5,-5 C2.23438,-5 0,-2.76563 0,0"/>
   }
   
   

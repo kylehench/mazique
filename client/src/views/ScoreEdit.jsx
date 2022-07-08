@@ -1,6 +1,6 @@
 import React from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import positionNotes from '../util/PositionNotes'
 import Score from '../components/score/Score'
 
 const ScoreEdit = () => {
@@ -11,11 +11,11 @@ const ScoreEdit = () => {
   const positionElements = () => {
     let measures = [
       { number:1,x:0,y:0,width:200,
-        clef:{type: 'bass'},
-        timeSig:{type: '6/8'},
+        clef:{type: 'treble'},
+        timeSig:{type: '3/4'},
         notes: [
           {
-            type: 'quarter',
+            type: 'half',
             pitch: {
               step: 'D',
               alter: 0,
@@ -29,10 +29,20 @@ const ScoreEdit = () => {
               alter: 1,
               octave: 4,
             },
+            dot: 1,
+          },
+          {
+            type: 'quarter',
+            pitch: {
+              step: 'D',
+              // alter: 0,
+              octave: 4,
+            },
+            dot: 1
           },
         ]
       },
-      {number:2,x:250,y:0,width:200}
+      // {number:2,x:250,y:0,width:200, notes: []}
     ]
 
     // compute positions
@@ -48,9 +58,9 @@ const ScoreEdit = () => {
           ...measure,
         }
       })
-
-
-    setMeasures(measures)
+    
+    // setMeasures(measures)
+    setMeasures(positionNotes(measures))
   }
 
   useEffect(() => {
