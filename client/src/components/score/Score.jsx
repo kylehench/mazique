@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Measure from './Measure'
 import StaffLines from './StaffLines'
 import Note from './Note'
+import Clef from './Clef'
+import TimeSig from './TimeSig'
+import BarLine from './BarLine'
 
 const Score = (props) => {
   const { measures, staves, symbols } = props
@@ -26,7 +29,11 @@ const Score = (props) => {
         })}
 
         {/* render symbols */}
-        { symbols.map(symbol => symbol) }
+        { symbols.map(symbol => {
+          if (symbol.type==='clef') return <Clef key={symbol.key} data={symbol.data} />
+          if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} />
+          if (symbol.type==='barLine') return <BarLine key={symbol.key} data={symbol.data} />
+        }) }
         
       </g>
     </svg>

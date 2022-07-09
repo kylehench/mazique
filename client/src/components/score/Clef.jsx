@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const Clef = (props) => {
-  const { x, y, sign } = props
+  const { x, y, sign } = props.data
   const [color, setColor] = useState('black')
   
   return (

@@ -7,14 +7,14 @@ const ScoreEdit = () => {
   const [zoom, setZoom] = useState(100)
   const [measures, setMeasures] = useState([])
   const [symbols, setSymbols] = useState([])
-  const [staves, setStaves] = useState([{x:0, y:0, width:2400}])
+  const [staves, setStaves] = useState([])
 
   const getMusic = () => {
-    let measures = [
+    let staticMeasures = [
       { number:1,
-        loc: {x: 0, y: 0, width: 200},
+        loc: {x: 0, y: 0},
         clef:{sign: 'treble'},
-        timeSig:{beats: 2, beatsType: 4},
+        timeSig:{beats: 4, beatsType: 4},
         notes: [
           {
             type: 'quarter',
@@ -44,7 +44,26 @@ const ScoreEdit = () => {
           },
         ]
       },
-      {number:2,x:250,y:0,width:200,
+      {number:2,x:250,y:0,
+        notes: [
+        {
+          type: 'half',
+          pitch: {
+            step: 'C',
+            // alter: 0,
+            octave: 3,
+          },
+        },
+        {
+          type: 'half',
+          pitch: {
+            step: 'G',
+            // alter: 0,
+            octave: 5,
+          },
+        },
+      ]},
+      {number:3,x:250,y:0,
         notes: [
         {
           type: 'half',
@@ -62,16 +81,31 @@ const ScoreEdit = () => {
             octave: 4,
           },
         },
-      ]}
+      ]},
+      {number:4,x:250,y:0,
+        notes: [
+        {
+          type: 'whole',
+          pitch: {
+            step: 'D',
+            // alter: 0,
+            octave: 4,
+          },
+        },
+      ]},
     ]
 
-    // compute positions
-    let x = 0 // last/ending horizontal position
-    let line = 0
-    let firstInLine = true
+    for (let i = 5; i < 55; i++) {
+      // staticMeasures.forEach(measure => {
+      //   staticMeasures.push({...measure, number: staticMeasures.length+1})
+        
+      // })
+      staticMeasures.push({...JSON.parse(JSON.stringify(staticMeasures[i%4])), number: i})
+      
+    }
 
     // position all elements
-    const elements = positionElements(measures)
+    const elements = positionElements(staticMeasures)
     setMeasures(elements.measures)
     setStaves(elements.staves)
     setSymbols(elements.symbols)
