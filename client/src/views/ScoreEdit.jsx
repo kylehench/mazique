@@ -1,7 +1,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import PanelTop from '../components/PanelTop'
 import positionElements from '../util/PositionElements'
 import Score from '../components/score/Score'
+import Keyboard from '../components/Keyboard'
 
 const ScoreEdit = () => {
   const [zoom, setZoom] = useState(100)
@@ -9,11 +11,13 @@ const ScoreEdit = () => {
   const [symbols, setSymbols] = useState([])
   const [staves, setStaves] = useState([])
 
+  const [newNote, setNewNote] = useState({type: 'quarter'})
+
   const getMusic = () => {
     let staticMeasures = [
       { number:1,
         loc: {x: 0, y: 0},
-        clef:{sign: 'treble'},
+        clef:{sign: 'bass'},
         timeSig:{beats: 4, beatsType: 4},
         notes: [
           {
@@ -96,12 +100,7 @@ const ScoreEdit = () => {
     ]
 
     for (let i = 5; i < 55; i++) {
-      // staticMeasures.forEach(measure => {
-      //   staticMeasures.push({...measure, number: staticMeasures.length+1})
-        
-      // })
       staticMeasures.push({...JSON.parse(JSON.stringify(staticMeasures[i%4])), number: i})
-      
     }
 
     // position all elements
@@ -110,16 +109,35 @@ const ScoreEdit = () => {
     setStaves(elements.staves)
     setSymbols(elements.symbols)
   }
-
+  
   useEffect(() => {
     getMusic()
   },[])
   
+  const placeNote = (note) => {
+    let oldMeasures = measures
+    if (measures!==[]) {
+      oldMeasures[oldMeasures.length-1].notes.push(note)
+      const elements = positionElements(measures)
+      setMeasures(elements.measures)
+      setStaves(elements.staves)
+      setSymbols(elements.symbols)
+    }
+  }
+  
   return (
     <div className="d-flex flex-column" style={{height: '100vh'}}>
-      <div className="border-bottom" style={{height: '50px'}}>top</div>
+
+      {/* top panel */}
+      <PanelTop zoom={zoom} setZoom={setZoom} newNote={newNote} setNewNote={setNewNote} />
+
       <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
-        <div className="border" style={{width: '150px'}}>left</div>
+
+        {/* left panel */}
+        <div className="border" style={{width: '150px'}}>
+          left<br />
+          {JSON.stringify(newNote)}
+        </div>
         <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
           <div style={{width: '100%', padding:'20px 25px'}}>
             <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
@@ -127,17 +145,16 @@ const ScoreEdit = () => {
             </div>
           </div>
         </div>
-        <div className="border" style={{width: '150px'}}>right</div>
+
+        {/* right panel */}
+        <div className="border" style={{width: '50px'}}>right</div>
       </div>
 
       {/* bottom panel */}
       <div className="border-top p-1" style={{}}>
-        <div className="d-flex justify-content-end align-items-center">
-          <label className="me-2">Zoom: {zoom}%</label>
-          <div className="btn-group btn-sm" role="group" aria-label="Basic example">
-            <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+5)}>+</button>
-            <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-5)}>-</button>
-          </div>
+        <div className="d-flex justify-content-center align-items-center">
+          <div><Keyboard placeNote={placeNote} newNote={newNote} setNewNote={setNewNote} /></div>
+          
         </div>
       </div>
     </div>

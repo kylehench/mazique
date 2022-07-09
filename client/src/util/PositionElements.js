@@ -1,10 +1,11 @@
 const positionElements = (measures, staves=[], symbols=[], start = 0) => {
-  let x = 0
+  let origin = {x: -40, y: 120}
+  let x = origin.x
   let measureStartX = 0 // initial x value of measure
-  let xTrigger = 2500 // x-value that triggers wrap
+  let xTrigger = 2450 // x-value that triggers wrap
   let xSpacer = 0 // used to justify content of full lines
   let spaceCount = 0 // count number of spaces on a line
-  let y = 0
+  let y = origin.y
   let width = 0 // width of measure
 
   let newLine = true
@@ -49,8 +50,8 @@ const positionElements = (measures, staves=[], symbols=[], start = 0) => {
     positionMeasureElements()
   
     if (x > xTrigger) {
-      staves.push({x: 0, y: y, xEnd: measureStartX}) 
-      x = 0
+      staves.push({x: origin.x, y: y, xEnd: measureStartX}) 
+      x = origin.x
       y += 500
       newLine = true
       symbols.length = prevSymbolLength
@@ -58,7 +59,7 @@ const positionElements = (measures, staves=[], symbols=[], start = 0) => {
     }
     
     if (mIdx === mArray.length - 1){ 
-      staves.push({x: 0, y: y, xEnd: x}) 
+      staves.push({x: origin.x, y: y, xEnd: x}) 
     }
   })
   return { measures, staves, symbols }
