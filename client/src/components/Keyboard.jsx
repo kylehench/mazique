@@ -6,7 +6,7 @@ const Keyboard = (props) => {
 const { placeNote, newNote } = props
 
   const keys = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
-  const keyScale = 1.5
+  const keyScale = 1
   const keyWidth = '35px'
   const whiteKeyStyle = {
     height:`${keyScale*105}px`,
@@ -37,7 +37,13 @@ const { placeNote, newNote } = props
       <div className="whiteKey" style={whiteKeyStyle}></div>
       <div className="blackKey" style={blackKeyStyle}></div> */}
       { keys.map((key, idx) => {
-        if (key.length===1) return <div key={idx} onClick={() => placeNoteCallBack('D', 4)} className="whiteKey" style={whiteKeyStyle}></div>
+        if (key.length===1) return <div key={idx} onClick={() => placeNoteCallBack('D', 4)} className="whiteKey" style={whiteKeyStyle}>
+          {idx===0 &&
+            <div className="d-flex flex-column justify-content-end" style={{height: '100%'}}>
+              <div className='ms-1'>C4</div>
+            </div>
+          }
+        </div>
         return <div key={idx} onClick={() => placeNoteCallBack('D', 4)} className="blackKey" style={blackKeyStyle}></div>
       })}
     </div>
