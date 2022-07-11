@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import PanelTop from '../components/PanelTop'
+import PanelRight from '../components/PanelRight'
 import positionElements from '../util/PositionElements'
 import Score from '../components/score/Score'
 import Keyboard from '../components/Keyboard'
@@ -12,6 +13,7 @@ const ScoreEdit = () => {
   const [staves, setStaves] = useState([])
 
   const [newNote, setNewNote] = useState({type: 'quarter'})
+  const [selection, setSelection] = useState({})
 
   const getMusic = () => {
     let staticMeasures = [
@@ -134,20 +136,22 @@ const ScoreEdit = () => {
       <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
 
         {/* left panel */}
-        <div className="border" style={{width: '150px'}}>
+        {/* <div className="border" style={{width: '150px'}}>
           left<br />
           {JSON.stringify(newNote)}
-        </div>
+        </div> */}
+
+        {/* center panel */}
         <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
           <div style={{width: '100%', padding:'20px 25px'}}>
             <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
-              <Score measures={measures} staves={staves} symbols={symbols} />
+              <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} />
             </div>
           </div>
         </div>
 
         {/* right panel */}
-        <div className="border" style={{width: '50px'}}>right</div>
+        {selection.id!==undefined && <PanelRight selection={selection} setSelection={setSelection} />}
       </div>
 
       {/* bottom panel */}

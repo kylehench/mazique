@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Measure from './Measure'
 import StaffLines from './StaffLines'
 import Note from './Note'
 import Clef from './Clef'
@@ -7,7 +6,7 @@ import TimeSig from './TimeSig'
 import BarLine from './BarLine'
 
 const Score = (props) => {
-  const { measures, staves, symbols } = props
+  const { measures, staves, symbols, setSelection } = props
   const ordered = useState()
   
   return (
@@ -25,7 +24,7 @@ const Score = (props) => {
         {/* render notes */}
         { measures.map((measure, mIdx) => {
           // return <Measure key={measure.number} measure={measure} />
-          return measure.notes.map((note, nIdx) => <Note key={`${mIdx}_${nIdx}`} note={note}/>)
+          return measure.notes.map((note, nIdx) => <Note key={`${mIdx}_${nIdx}`} note={note} id={{measure: mIdx, note: nIdx}} setSelection={setSelection} />)
         })}
 
         {/* render symbols */}
