@@ -99,7 +99,7 @@ const ScoreEdit = () => {
       ]},
     ]
 
-    for (let i = 5; i < 55; i++) {
+    for (let i = 5; i < 15; i++) {
       staticMeasures.push({...JSON.parse(JSON.stringify(staticMeasures[i%4])), number: i})
     }
 

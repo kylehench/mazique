@@ -1,3 +1,5 @@
+// export default const 
+
 const positionElements = (measures, staves=[], symbols=[], start = 0) => {
   let origin = {x: -40, y: 120}
   let x = origin.x

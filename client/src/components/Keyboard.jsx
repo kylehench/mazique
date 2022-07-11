@@ -6,8 +6,12 @@ const Keyboard = (props) => {
 const { placeNote, newNote } = props
 
   const keys = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+  const octaves = []
+  for (let octave=2; octave<=7; octave++) {
+    octaves.push(octave)
+  }
+
   const keyScale = 1
-  const keyWidth = '35px'
   const whiteKeyStyle = {
     height:`${keyScale*105}px`,
     width:`${keyScale*35}px`,
@@ -22,29 +26,29 @@ const { placeNote, newNote } = props
 
   const placeNoteCallBack = (step, octave) => {
     const tmpNote = structuredClone(newNote)
-    tmpNote.pitch = { ...tmpNote.pitch, step, octave}
-    console.log(tmpNote)
+    tmpNote.pitch = { ...tmpNote.pitch, step: step[0], octave}
+    if (step.length===2) tmpNote.pitch.alter = 1
     placeNote(tmpNote)
   }
 
   return (
     <div className="d-flex">
-      
-      
-      {/* <div className="whiteKey" style={whiteKeyStyle}></div>
-      <div className="blackKey" style={blackKeyStyle}></div>
-      <div className="whiteKey" style={whiteKeyStyle}></div>
-      <div className="whiteKey" style={whiteKeyStyle}></div>
-      <div className="blackKey" style={blackKeyStyle}></div> */}
-      { keys.map((key, idx) => {
-        if (key.length===1) return <div key={idx} onClick={() => placeNoteCallBack('D', 4)} className="whiteKey" style={whiteKeyStyle}>
-          {idx===0 &&
-            <div className="d-flex flex-column justify-content-end" style={{height: '100%'}}>
-              <div className='ms-1'>C4</div>
-            </div>
-          }
-        </div>
-        return <div key={idx} onClick={() => placeNoteCallBack('D', 4)} className="blackKey" style={blackKeyStyle}></div>
+      { octaves.map((octave, octIdx) => {
+        return keys.map((key, keyIdx) => {
+          const whiteKey = (key.length===1)
+          return <div
+              key={`${octIdx}_${keyIdx}`}
+              onClick={() => placeNoteCallBack(key, octave+(keyIdx>=9))}
+              className={whiteKey ? 'whiteKey' : 'blackKey'}
+              style={whiteKey ? whiteKeyStyle : blackKeyStyle}
+            >
+              {keyIdx===0 &&
+                <div className="d-flex flex-column justify-content-end" style={{height: '100%'}}>
+                  <div className='ms-1'>C{octave}</div>
+                </div>
+              }
+          </div>
+        })
       })}
     </div>
   )

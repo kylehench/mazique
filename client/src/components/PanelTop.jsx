@@ -63,10 +63,10 @@ const PanelTop = (props) => {
         >None</button>
       </div>
       <div>
-        <label className="me-2">Zoom: {zoom}%</label>
+        <label className="me-1">Zoom: {zoom}%</label>
         <div className="btn-group btn-sm" role="group" aria-label="Basic example">
-          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+5)}>+</button>
-          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-5)}>-</button>
+          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>+</button>
+          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-10)}>-</button>
         </div>
       </div>
     </div>
