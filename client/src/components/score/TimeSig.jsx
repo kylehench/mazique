@@ -2,13 +2,17 @@ import React from 'react'
 import { useState } from 'react'
 
 const TimeSig = (props) => {
+  const { setSelection } = props
   const { x, y, beats, beatsType } = props.data
   const [color, setColor] = useState('black')
   const xOffset = -77
   
   return (
     <a href="javascript:void(0)"
-    onFocus={()=>setColor('blue')}
+    onFocus={() => {
+      setColor('blue')
+      setSelection({type: 'timeSig', timeSig: {beats, beatsType}})
+    }}
     onBlur={()=>setColor('black')}
   >
     {/* top */}

@@ -3,15 +3,16 @@ import '../styles/keyboard.css'
 
 
 const Keyboard = (props) => {
-const { placeNote, newNote } = props
+const { placeNote, newNote, keyboardZoom, setKeyboardWidth } = props
 
   const keys = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
   const octaves = []
   for (let octave=2; octave<=7; octave++) {
     octaves.push(octave)
   }
+  // setKeyboardWidth(octaves.length/4)
 
-  const keyScale = 1
+  const keyScale = keyboardZoom/100
   const whiteKeyStyle = {
     height:`${keyScale*105}px`,
     width:`${keyScale*35}px`,
@@ -32,7 +33,7 @@ const { placeNote, newNote } = props
   }
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{}}>
       { octaves.map((octave, octIdx) => {
         return keys.map((key, keyIdx) => {
           const whiteKey = (key.length===1)

@@ -1,6 +1,7 @@
 import React from 'react'
 
 const BarLine = (props) => {
+  const { setSelection } = props
   const { x, y, type } = props.data
 
   const renderBarline = () => {

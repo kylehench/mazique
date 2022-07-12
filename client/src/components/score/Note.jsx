@@ -2,10 +2,11 @@ import React from 'react'
 import { useState } from 'react'
 
 const Note = (props) => {
-  const { note, id, setSelection } = props
+  const { note, id, setSelection, clef } = props
   const { x, y } = note.loc
   const type = note.type
-  const step = (note.pitch.step.toLowerCase().charCodeAt(0)-100)+(7*(note.pitch.octave-4))
+  let step = (note.pitch.step.toLowerCase().charCodeAt(0)-100)+(7*(note.pitch.octave-3))
+  if (clef==='treble') step -= 12
   const [color, setColor] = useState('black')
 
   const ledgerLines = () => {
@@ -59,7 +60,7 @@ const Note = (props) => {
     <a href="#"
       onFocus={()=> {
         setColor('blue')
-        setSelection({id, note})
+        setSelection({id, type: 'note', note})
       }}
       onBlur={()=>setColor('black')}
     >

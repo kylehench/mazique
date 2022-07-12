@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 
 const Clef = (props) => {
+  const { setSelection } = props
   const { x, y, sign } = props.data
   const [color, setColor] = useState('black')
   
   return (
     <a href="#"
-      onFocus={()=>setColor('blue')}
+      onFocus={() => {
+        setColor('blue')
+        setSelection({type: 'clef', clef: {sign}})
+      }}
       onBlur={()=>setColor('black')}
     >
       {sign==='bass' &&

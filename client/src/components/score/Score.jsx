@@ -6,7 +6,7 @@ import TimeSig from './TimeSig'
 import BarLine from './BarLine'
 
 const Score = (props) => {
-  const { measures, staves, symbols, setSelection } = props
+  const { measures, staves, symbols, setSelection, clef } = props
   const ordered = useState()
   
   return (
@@ -24,14 +24,14 @@ const Score = (props) => {
         {/* render notes */}
         { measures.map((measure, mIdx) => {
           // return <Measure key={measure.number} measure={measure} />
-          return measure.notes.map((note, nIdx) => <Note key={`${mIdx}_${nIdx}`} note={note} id={{measure: mIdx, note: nIdx}} setSelection={setSelection} />)
+          return measure.notes.map((note, nIdx) => <Note key={`${mIdx}_${nIdx}`} note={note} id={{measure: mIdx, note: nIdx}} setSelection={setSelection} clef={clef} />)
         })}
 
         {/* render symbols */}
         { symbols.map(symbol => {
-          if (symbol.type==='clef') return <Clef key={symbol.key} data={symbol.data} />
-          if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} />
-          if (symbol.type==='barLine') return <BarLine key={symbol.key} data={symbol.data} />
+          if (symbol.type==='clef') return <Clef key={symbol.key} data={symbol.data} setSelection={setSelection} />
+          if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} setSelection={setSelection} />
+          if (symbol.type==='barLine') return <BarLine key={symbol.key} data={symbol.data} setSelection={setSelection} />
         }) }
         
       </g>

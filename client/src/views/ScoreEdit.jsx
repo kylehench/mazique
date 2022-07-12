@@ -7,18 +7,74 @@ import Score from '../components/score/Score'
 import Keyboard from '../components/Keyboard'
 
 const ScoreEdit = () => {
+  // application states
   const [zoom, setZoom] = useState(100)
-  const [measures, setMeasures] = useState([])
-  const [symbols, setSymbols] = useState([])
-  const [staves, setStaves] = useState([])
-
+  const [keyboardZoom, setKeyboardZoom] = useState(120)
+  const [keyboardWidth, setKeyboardWidth] = useState(6/4)
   const [newNote, setNewNote] = useState({type: 'quarter'})
   const [selection, setSelection] = useState({})
 
+  // document state
+  const [document, setDocument] = useState([])
+
+  // display states
+  const [measures, setMeasures] = useState([])
+  const [symbols, setSymbols] = useState([])
+  const [staves, setStaves] = useState([])
+  const [clef, setClef] = useState('')
+
+  // update display states to reflect document
+  const updateDisplayStates = (document) => {
+    const elements = positionElements(structuredClone(document))
+    setMeasures(elements.measures)
+    setStaves(elements.staves)
+    setSymbols(elements.symbols)
+    setClef(elements.measures[0].clef.sign)
+  }
+
+  const documentReducer = (action) => {
+    switch (action.type) {
+
+      case 'setTimeSig':
+        document[0].timeSig = action.payload
+        break
+
+      case 'setClef':
+        document[0].clef = action.payload
+        break
+
+      case 'appendNote':
+        const { beats, beatsType } = document[0].timeSig
+        const requestedNote = action.payload
+
+        // determine space available in measure
+        const durationLookup = {
+          quarter: 1,
+          half: 2,
+          whole: 4
+        }
+        const spaceAvailable = beats/beatsType*4 - document[document.length-1].notes.reduce((sum, note) => { return sum + durationLookup[note.type]}, 0)
+        if (spaceAvailable===0) {
+          document.push({
+            number: document.length,
+            notes: [requestedNote]
+          })
+        // } else if (spaceAvailable < 0) {
+
+        } else {
+          document[document.length-1].notes.push(requestedNote)
+        }
+        break
+        
+      default:
+        break
+    }
+    updateDisplayStates(document)
+  }
+
   const getMusic = () => {
-    let staticMeasures = [
+    let staticDocument = [
       { number:1,
-        loc: {x: 0, y: 0},
         clef:{sign: 'bass'},
         timeSig:{beats: 4, beatsType: 4},
         notes: [
@@ -50,7 +106,7 @@ const ScoreEdit = () => {
           },
         ]
       },
-      {number:2,x:250,y:0,
+      {number:2,
         notes: [
         {
           type: 'half',
@@ -65,11 +121,11 @@ const ScoreEdit = () => {
           pitch: {
             step: 'G',
             // alter: 0,
-            octave: 5,
+            octave: 4,
           },
         },
       ]},
-      {number:3,x:250,y:0,
+      {number:3,
         notes: [
         {
           type: 'half',
@@ -88,7 +144,7 @@ const ScoreEdit = () => {
           },
         },
       ]},
-      {number:4,x:250,y:0,
+      {number:4,
         notes: [
         {
           type: 'whole',
@@ -101,34 +157,35 @@ const ScoreEdit = () => {
       ]},
     ]
 
-    for (let i = 5; i < 15; i++) {
-      staticMeasures.push({...JSON.parse(JSON.stringify(staticMeasures[i%4])), number: i})
-    }
+    // for (let i = 5; i < 55; i++) {
+    //   staticDocument.push({...JSON.parse(JSON.stringify(staticDocument[i%4])), number: i})
+    // }
 
     // position all elements
-    const elements = positionElements(staticMeasures)
-    setMeasures(elements.measures)
-    setStaves(elements.staves)
-    setSymbols(elements.symbols)
+    setDocument(staticDocument)
+    updateDisplayStates(staticDocument)
   }
   
   useEffect(() => {
     getMusic()
   },[])
   
+  // const placeNote = (note) => {
+  //   let oldMeasures = measures
+  //   if (measures!==[]) {
+  //     oldMeasures[oldMeasures.length-1].notes.push(note)
+  //     const elements = positionElements(measures)
+  //     setMeasures(elements.measures)
+  //     setStaves(elements.staves)
+  //     setSymbols(elements.symbols)
+  //   }
+  // }
   const placeNote = (note) => {
-    let oldMeasures = measures
-    if (measures!==[]) {
-      oldMeasures[oldMeasures.length-1].notes.push(note)
-      const elements = positionElements(measures)
-      setMeasures(elements.measures)
-      setStaves(elements.staves)
-      setSymbols(elements.symbols)
-    }
+    documentReducer({type: 'appendNote', payload: note})
   }
   
   return (
-    <div className="d-flex flex-column" style={{height: '100vh'}}>
+    <div className="d-flex flex-column" style={{height: '100vh', width: '100vw'}}>
 
       {/* top panel */}
       <PanelTop zoom={zoom} setZoom={setZoom} newNote={newNote} setNewNote={setNewNote} />
@@ -145,19 +202,20 @@ const ScoreEdit = () => {
         <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
           <div style={{width: '100%', padding:'20px 25px'}}>
             <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
-              <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} />
+              <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} clef={clef} />
             </div>
           </div>
         </div>
 
         {/* right panel */}
-        {selection.id!==undefined && <PanelRight selection={selection} setSelection={setSelection} />}
+        {selection.type!==undefined && <PanelRight selection={selection} setSelection={setSelection} documentReducer={documentReducer} />}
       </div>
 
       {/* bottom panel */}
-      <div className="border-top p-1" style={{}}>
-        <div className="d-flex justify-content-center align-items-center">
-          <div><Keyboard placeNote={placeNote} newNote={newNote} setNewNote={setNewNote} /></div>
+        <div className="border-top" style={{width: '100%', overflowX: 'auto'}}>
+          <div className="" style={{width: '100%'}}>
+            <div style={{margin: '0 auto', width:`${keyboardWidth*keyboardZoom*10}px`}}><Keyboard placeNote={placeNote} newNote={newNote} setNewNote={setNewNote} keyboardZoom={keyboardZoom} setKeyboardZoom={setKeyboardZoom} setKeyboardWidth={setKeyboardWidth} />
+          </div>
           
         </div>
       </div>
