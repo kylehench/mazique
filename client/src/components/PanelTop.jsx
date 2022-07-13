@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import * as Icon from 'react-feather'
 
 const PanelTop = (props) => {
   const { zoom, setZoom, newNote, setNewNote, documentReducer } = props
@@ -34,12 +35,13 @@ const PanelTop = (props) => {
         <button className='btn btn-sm btn-primary m-1 ms-2'>
           <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
         </button>
-        <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'undo'})}>
-          Undo
+        <button className='btn btn-sm border border-secondary m-1 ms-2' onClick={() => documentReducer({type: 'undo'})}>
+          <Icon.RotateCcw size={16} />
         </button>
-        <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'redo'})}>
-          Redo
+        <button className='btn btn-sm border border-secondary m-1 ms-2' onClick={() => documentReducer({type: 'redo'})}>
+          <Icon.RotateCw size={16} />
         </button>
+
       </div>
       <div className="d-flex align-items-center">
         <div>
@@ -89,8 +91,16 @@ const PanelTop = (props) => {
       
         <label className="me-1">Zoom: {zoom}%</label>
         <div className="btn-group btn-sm" role="group" aria-label="Basic example">
-          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>+</button>
-          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-10)}>-</button>
+          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>
+            <div className="d-flex">
+              <Icon.ZoomIn size={18} />
+           </div>
+          </button>
+          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-10)}>
+            <div className="d-flex">
+             <Icon.ZoomOut size={18} />
+           </div>
+          </button>
         </div>
       </div>
     </div>
