@@ -57,12 +57,12 @@ const Note = (props) => {
   }
 
   return (
-    <a href="#"
+    <g
       onFocus={()=> {
-        setColor('blue')
         setSelection({id, type: 'note', note})
       }}
-      onBlur={()=>setColor('black')}
+      style={{pointerEvents: 'bounding-box'}}
+      tabIndex={0}
     >
 
       {/* render note */}
@@ -110,7 +110,7 @@ const Note = (props) => {
 
       {/* render augmentation dot if present */}
       {note.dot!==undefined && renderDot()}
-    </a>
+    </g>
   )
 }
 
