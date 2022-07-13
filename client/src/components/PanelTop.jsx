@@ -14,14 +14,18 @@ const PanelTop = (props) => {
   const selectAccidental = (accidental) => {
     setAccidental(accidental)
     if (accidental==='none') {
-      const tmpNote = newNote
-      delete tmpNote.pitch.alter
-      setNewNote({...tmpNote})
+      delete newNote.pitch.alter
+      setNewNote({...newNote})
     } else {
       setNewNote({...newNote, pitch: {...newNote.pitch, alter: accidental}})
     }
   }
-  const clearAccidental = () => {
+  const toggleDot = () => {
+    if (newNote.dot) {
+      delete newNote.dot
+    } else {
+      newNote.dot = 1
+    }
   }
   
   return (
@@ -29,38 +33,49 @@ const PanelTop = (props) => {
       <button className='btn btn-sm btn-primary m-1 ms-2'>
         <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
       </button>
-      <div>
-        <label>Duration:</label>
-        <button 
-          className={`btn btn-sm btn-outline-primary ms-2 ${duration==='quarter' && 'active'}`}
-          onClick={() => selectDuration('quarter')}
-        >Quarter</button>
-        <button 
-          className={`btn btn-sm btn-outline-primary mx-1 ${duration==='half' && 'active'}`}
-          onClick={() => selectDuration('half')}
-        >Half</button>
-        <button 
-          className={`btn btn-sm btn-outline-primary ${duration==='whole' && 'active'}`}
-          onClick={() => selectDuration('whole')}
-        >Whole</button>
-
-        <label className="ms-4">Accidental:</label>
-        <button 
-          className={`btn btn-sm btn-outline-primary ms-2 ${accidental===-1 && 'active'}`}
-          onClick={() => selectAccidental(-1)}
-        >Flat</button>
-        <button 
-          className={`btn btn-sm btn-outline-primary mx-1 ${accidental===0 && 'active'}`}
-          onClick={() => selectAccidental(0)}
-        >Natural</button>
-        <button 
-          className={`btn btn-sm btn-outline-primary ${accidental===1 && 'active'}`}
-          onClick={() => selectAccidental(1)}
-        >Sharp</button>
-        <button 
-          className={`btn btn-sm btn-outline-primary ms-1 ${accidental==='none' && 'active'}`}
-          onClick={() => selectAccidental('none')}
-        >None</button>
+      <div className="d-flex align-items-center">
+        <div>
+          <label>Duration:</label>
+          <button 
+            className={`btn btn-sm btn-outline-primary ms-2 ${duration==='quarter' && 'active'}`}
+            onClick={() => selectDuration('quarter')}
+            >Quarter</button>
+          <button 
+            className={`btn btn-sm btn-outline-primary mx-1 ${duration==='half' && 'active'}`}
+            onClick={() => selectDuration('half')}
+          >Half</button>
+          <button 
+            className={`btn btn-sm btn-outline-primary ${duration==='whole' && 'active'}`}
+            onClick={() => selectDuration('whole')}
+          >Whole</button>
+        </div>
+        <div className="vr mx-3"></div>
+        <div className="form-check border-left">
+          <input className="form-check-input text text-sm" type="checkbox" onClick={() => toggleDot()} />
+          <label className="form-check-label">
+            Dotted Note
+          </label>
+        </div>
+        <div className="vr mx-3"></div>
+        <div>
+          <label>Accidental:</label>
+          <button 
+            className={`btn btn-sm btn-outline-primary ms-2 ${accidental===-1 && 'active'}`}
+            onClick={() => selectAccidental(-1)}
+            >Flat</button>
+          <button 
+            className={`btn btn-sm btn-outline-primary mx-1 ${accidental===0 && 'active'}`}
+            onClick={() => selectAccidental(0)}
+            >Natural</button>
+          <button 
+            className={`btn btn-sm btn-outline-primary ${accidental===1 && 'active'}`}
+            onClick={() => selectAccidental(1)}
+          >Sharp</button>
+          <button 
+            className={`btn btn-sm btn-outline-primary ms-1 ${accidental==='none' && 'active'}`}
+            onClick={() => selectAccidental('none')}
+            >None</button>
+        </div>
       </div>
       <div>
         <label className="me-1">Zoom: {zoom}%</label>

@@ -43,6 +43,9 @@ const ScoreEdit = () => {
         document[0].clef = action.payload
         break
 
+      case 'editNote':
+        break
+
       case 'appendNote':
         const { beats, beatsType } = document[0].timeSig
         const requestedNote = action.payload
