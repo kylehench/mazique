@@ -30,9 +30,17 @@ const PanelTop = (props) => {
   
   return (
     <div className="border-bottom d-flex justify-content-between align-items-center" style={{}}>
-      <button className='btn btn-sm btn-primary m-1 ms-2'>
-        <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
-      </button>
+      <div>
+        <button className='btn btn-sm btn-primary m-1 ms-2'>
+          <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
+        </button>
+        <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'undo'})}>
+          Undo
+        </button>
+        <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'redo'})}>
+          Redo
+        </button>
+      </div>
       <div className="d-flex align-items-center">
         <div>
           <label>Duration:</label>
@@ -78,12 +86,7 @@ const PanelTop = (props) => {
         </div>
       </div>
       <div>
-      <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'undo'})}>
-        Undo
-      </button>
-      <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'redo'})}>
-        Redo
-      </button>
+      
         <label className="me-1">Zoom: {zoom}%</label>
         <div className="btn-group btn-sm" role="group" aria-label="Basic example">
           <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>+</button>

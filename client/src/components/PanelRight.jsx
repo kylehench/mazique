@@ -1,7 +1,7 @@
 import React from 'react'
-import InspectTimeSig from './score/InspectTimeSig'
-import InspectClef from './score/InspectClef'
-import InspectNote from './score/InspectNote'
+import InspectTimeSig from './InspectTimeSig'
+import InspectClef from './InspectClef'
+import InspectNote from './InspectNote'
 
 const PanelRight = (props) => {
   const { selection, setSelection, documentReducer } = props
