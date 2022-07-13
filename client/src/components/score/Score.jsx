@@ -7,7 +7,6 @@ import BarLine from './BarLine'
 
 const Score = (props) => {
   const { measures, staves, symbols, setSelection, clef } = props
-  const ordered = useState()
   
   return (
     // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2976.38 4209.45">

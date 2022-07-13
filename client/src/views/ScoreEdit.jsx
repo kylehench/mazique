@@ -16,6 +16,8 @@ const ScoreEdit = () => {
 
   // document state
   const [document, setDocument] = useState([])
+  const [undoStack, setUndoStack] = useState([])
+  const [redoStack, setRedoStack] = useState([])
 
   // display states
   const [measures, setMeasures] = useState([])
@@ -33,10 +35,18 @@ const ScoreEdit = () => {
   }
 
   const documentReducer = (action) => {
+    if (action.type!=='undo' && action.type!=='redo') {
+      setUndoStack([...undoStack, structuredClone(document)])
+    } else {
+      if (action.type==='undo' && undoStack.length===0) return
+      if (action.type==='redo' && redoStack.length===0) return
+    }
+    let nextDoc = []
+    
     switch (action.type) {
 
       case 'setTimeSig':
-        document[0].timeSig = action.payload
+        document[0].timeSig = structuredClone(action.payload)
         break
 
       case 'setClef':
@@ -52,6 +62,7 @@ const ScoreEdit = () => {
 
         // determine space available in measure
         const durationLookup = {
+          eighth: 0.5,
           quarter: 1,
           half: 2,
           whole: 4
@@ -68,11 +79,28 @@ const ScoreEdit = () => {
           document[document.length-1].notes.push(requestedNote)
         }
         break
+
+      case 'undo':
+        setRedoStack([...redoStack, document])
+        nextDoc = undoStack.pop()
+        setDocument(nextDoc)
+        updateDisplayStates(nextDoc)
+        return
+
+      case 'redo':
+        setUndoStack([...undoStack, document])
+        nextDoc = redoStack.pop()
+        setDocument(nextDoc)
+        updateDisplayStates(nextDoc)
+        return
         
       default:
         break
     }
+    
+    setRedoStack([])
     updateDisplayStates(document)
+    
   }
 
   const getMusic = () => {
@@ -191,7 +219,7 @@ const ScoreEdit = () => {
     <div className="d-flex flex-column" style={{height: '100vh', width: '100vw'}}>
 
       {/* top panel */}
-      <PanelTop zoom={zoom} setZoom={setZoom} newNote={newNote} setNewNote={setNewNote} />
+      <PanelTop zoom={zoom} setZoom={setZoom} newNote={newNote} setNewNote={setNewNote} documentReducer={documentReducer} />
 
       <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
 

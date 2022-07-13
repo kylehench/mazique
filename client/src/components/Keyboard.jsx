@@ -45,7 +45,7 @@ const { placeNote, newNote, keyboardZoom, setKeyboardWidth } = props
             >
               {keyIdx===0 &&
                 <div className="d-flex flex-column justify-content-end" style={{height: '100%'}}>
-                  <div className='ms-1'>C{octave}</div>
+                  <div className='ms-1 noselect'>C{octave}</div>
                 </div>
               }
           </div>

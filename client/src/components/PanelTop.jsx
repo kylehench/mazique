@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const PanelTop = (props) => {
-  const { zoom, setZoom, newNote, setNewNote } = props
+  const { zoom, setZoom, newNote, setNewNote, documentReducer } = props
   const [duration, setDuration] = useState()
   const [accidental, setAccidental] = useState()
 
@@ -78,6 +78,12 @@ const PanelTop = (props) => {
         </div>
       </div>
       <div>
+      <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'undo'})}>
+        Undo
+      </button>
+      <button className='btn btn-sm btn-primary m-1 ms-2' onClick={() => documentReducer({type: 'redo'})}>
+        Redo
+      </button>
         <label className="me-1">Zoom: {zoom}%</label>
         <div className="btn-group btn-sm" role="group" aria-label="Basic example">
           <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>+</button>
