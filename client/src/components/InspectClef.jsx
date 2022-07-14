@@ -1,12 +1,15 @@
 import React from 'react'
 
 const InspectClef = (props) => {
-  const { selection, setSelection, documentReducer } = props
+  const { document, documentReducer } = props
 
   return (
     <div>
       Clef:
-      <select className="form-select mt-1" defaultValue={selection.clef.sign} onChange={(e) => documentReducer({type: 'setClef', payload: {sign: e.target.value}})}>
+      <select className="form-select mt-1"
+        value={document[0].clef.sign}
+        onChange={(e) => documentReducer({type: 'setClef', payload: {sign: e.target.value}})}
+      >
         <option value="treble">Treble</option>
         <option value="bass">Bass</option>
       </select>

@@ -7,17 +7,22 @@ import Score from '../components/score/Score'
 import Keyboard from '../components/Keyboard'
 
 const ScoreEdit = () => {
+  
   // application states
   const [zoom, setZoom] = useState(100)
   const [keyboardZoom, setKeyboardZoom] = useState(120)
   const [keyboardWidth, setKeyboardWidth] = useState(6/4)
   const [newNote, setNewNote] = useState({type: 'quarter'})
   const [selection, setSelection] = useState({})
+  // bundled app state
+  const appState = {zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection}
 
   // document state
   const [document, setDocument] = useState([])
   const [undoStack, setUndoStack] = useState([])
   const [redoStack, setRedoStack] = useState([])
+  // bundled document state
+  const documentState = { document, setDocument, undoStack, setUndoStack, redoStack, setRedoStack }
 
   // display states
   const [measures, setMeasures] = useState([])
@@ -33,10 +38,14 @@ const ScoreEdit = () => {
     setSymbols(elements.symbols)
     setClef(elements.measures[0].clef.sign)
   }
-
+  
   const documentReducer = (action) => {
     if (action.type!=='undo' && action.type!=='redo') {
-      setUndoStack([...undoStack, structuredClone(document)])
+      if (undoStack.length<110) {
+        setUndoStack([...undoStack, structuredClone(document)])
+      } else {
+        setUndoStack([...undoStack.slice(10,undoStack.length), structuredClone(document)])
+      }
     } else {
       if (action.type==='undo' && undoStack.length===0) return
       if (action.type==='redo' && redoStack.length===0) return
@@ -46,7 +55,7 @@ const ScoreEdit = () => {
     switch (action.type) {
 
       case 'setTimeSig':
-        document[0].timeSig = structuredClone(action.payload)
+        document[0].timeSig = action.payload
         break
 
       case 'setClef':
@@ -100,7 +109,6 @@ const ScoreEdit = () => {
     
     setRedoStack([])
     updateDisplayStates(document)
-    
   }
 
   const getMusic = () => {
@@ -201,16 +209,6 @@ const ScoreEdit = () => {
     getMusic()
   },[])
   
-  // const placeNote = (note) => {
-  //   let oldMeasures = measures
-  //   if (measures!==[]) {
-  //     oldMeasures[oldMeasures.length-1].notes.push(note)
-  //     const elements = positionElements(measures)
-  //     setMeasures(elements.measures)
-  //     setStaves(elements.staves)
-  //     setSymbols(elements.symbols)
-  //   }
-  // }
   const placeNote = (note) => {
     documentReducer({type: 'appendNote', payload: note})
   }
@@ -218,38 +216,38 @@ const ScoreEdit = () => {
   return (
     <div className="d-flex flex-column" style={{height: '100vh', width: '100vw'}}>
 
-      {/* top panel */}
-      <PanelTop zoom={zoom} setZoom={setZoom} newNote={newNote} setNewNote={setNewNote} documentReducer={documentReducer} />
+        {/* top panel */}
+        <PanelTop appState={appState} documentState={documentState} documentReducer={documentReducer} />
 
-      <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
+        <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
 
-        {/* left panel */}
-        {/* <div className="border" style={{width: '150px'}}>
-          left<br />
-          {JSON.stringify(newNote)}
-        </div> */}
+          {/* left panel */}
+          {/* <div className="border" style={{width: '150px'}}>
+            left<br />
+            {JSON.stringify(newNote)}
+          </div> */}
 
-        {/* center panel */}
-        <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
-          <div style={{width: '100%', padding:'20px 25px'}}>
-            <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
-              <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} clef={clef} />
+          {/* center panel */}
+          <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
+            <div style={{width: '100%', padding:'20px 25px'}}>
+              <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white'}}>
+                <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} clef={clef} />
+              </div>
             </div>
           </div>
+
+          {/* right panel */}
+          {selection.type!==undefined && <PanelRight selection={selection} setSelection={setSelection} appState={appState} measures={measures} document={document} documentReducer={documentReducer} />}
         </div>
 
-        {/* right panel */}
-        {selection.type!==undefined && <PanelRight selection={selection} setSelection={setSelection} documentReducer={documentReducer} />}
-      </div>
-
-      {/* bottom panel */}
-        <div className="border-top" style={{width: '100%', overflowX: 'auto'}}>
-          <div className="" style={{width: '100%'}}>
-            <div style={{margin: '0 auto', width:`${keyboardWidth*keyboardZoom*10}px`}}><Keyboard placeNote={placeNote} newNote={newNote} setNewNote={setNewNote} keyboardZoom={keyboardZoom} setKeyboardZoom={setKeyboardZoom} setKeyboardWidth={setKeyboardWidth} />
+        {/* bottom panel */}
+          <div className="border-top" style={{width: '100%', overflowX: 'auto'}}>
+            <div className="" style={{width: '100%'}}>
+              <div style={{margin: '0 auto', width:`${keyboardWidth*keyboardZoom*10}px`}}><Keyboard placeNote={placeNote} newNote={newNote} setNewNote={setNewNote} keyboardZoom={keyboardZoom} setKeyboardZoom={setKeyboardZoom} setKeyboardWidth={setKeyboardWidth} />
+            </div>
+            
           </div>
-          
         </div>
-      </div>
     </div>
   )
 }

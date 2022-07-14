@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import StaffLines from './StaffLines'
 import Note from './Note'
 import Clef from './Clef'
@@ -16,7 +16,7 @@ const Score = (props) => {
         <Measure x={0} y={300} width={1000} /> */}
 
         {/* render staves */}
-        {staves.map((staff, idx) => {
+        { staves.map((staff, idx) => {
           return <StaffLines key={idx} staff={staff} />
         })}
 

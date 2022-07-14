@@ -4,7 +4,7 @@ import InspectClef from './InspectClef'
 import InspectNote from './InspectNote'
 
 const PanelRight = (props) => {
-  const { selection, setSelection, documentReducer } = props
+  const { selection, setSelection, measures, document, documentReducer } = props
   
   return (
     <div className="border p-3" style={{width: '250px'}}>
@@ -15,8 +15,8 @@ const PanelRight = (props) => {
       {(() => {
         switch(selection.type) {
           case 'note' : return <InspectNote selection={selection} setSelection={setSelection} documentReducer={documentReducer} />
-          case 'timeSig' : return <InspectTimeSig selection={selection} setSelection={setSelection} documentReducer={documentReducer} />
-          case 'clef' : return <InspectClef selection={selection} setSelection={setSelection} documentReducer={documentReducer} />
+          case 'timeSig' : return <InspectTimeSig measures={measures} document={document} documentReducer={documentReducer} />
+          case 'clef' : return <InspectClef document={document} documentReducer={documentReducer} />
           default: return null
         }
       })()}

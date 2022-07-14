@@ -1,0 +1,9 @@
+- Express/MongoDB backend
+- socket.io
+- adjustable piano keyboard size. Possibly, iPad view
+- React Bootstrap for beautiful dropdown selectors
+    - dialog box that informs new users of inspection feature
+- user login (include guest login)
+- metronome
+- note length based on 
+- song playback
