@@ -1,13 +1,10 @@
-COMPLETE DELETE MEASURE - SELECT PREVIOUS OR NEXT MEASURE
-
-- Overwrite vs append note
-- Delete Measure
-
+- Overwrite
 - Express/MongoDB backend
 - socket.io
 - adjustable piano keyboard size. Possibly, iPad view
 - update App favicon
 - line justification
+- add alto and tenor clef
 - React Bootstrap for beautiful dropdown selectors
     - dialog box that informs new users of inspection feature
 - user login (include guest login)

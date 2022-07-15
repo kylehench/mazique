@@ -1,22 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const InspectMeasure = ({ selection, documentReducer }) => {
+  const [insertMeasureCount, setInsertMeasureCount] = useState(1)
+  const [moveMeasureCount, setMoveMeasureCount] = useState(1)
+  
+  const measureInsert = (direction) => {
+    let mIdx = selection.id.measure
+    if (direction==='right') mIdx++
+    documentReducer({type: 'measureInsert', payload: {direction, mIdx, insertMeasureCount}})
+  }
+  
   return (
     <div>
       <h5>Measure</h5>
       <div>Insert New Measure(s)</div>
       <div className="d-flex align-items-center">
         <label>Count:</label>
-        <input type="number" className='form-control form-control-sm ms-2 my-1' defaultValue='1' min='1' />
+        <input type="number" className='form-control form-control-sm ms-2 my-2' value={insertMeasureCount} onChange={(e) => setInsertMeasureCount(e.target.value)} min='1' />
       </div>
       <div className="d-flex mb-3">
-        <button className='btn btn-sm btn-secondary' style={{width: '110px'}}>Insert Before</button>
-        <button className='btn btn-sm btn-secondary ms-2' style={{width: '110px'}}>Insert After</button>
+        <button className='btn btn-sm btn-secondary' onClick={() => measureInsert('left')} style={{width: '110px'}}>Insert Before</button>
+        <button className='btn btn-sm btn-secondary ms-2' onClick={() => measureInsert('right')} style={{width: '110px'}}>Insert After</button>
       </div>
       <div>Move Measure</div>
       <div className="d-flex align-items-center">
         <label>Count:</label>
-        <input type="number" className='form-control form-control-sm ms-2 my-1' defaultValue='1' min='1' />
+        <input type="number" className='form-control form-control-sm ms-2 my-2' value={moveMeasureCount} onChange={(e) => setMoveMeasureCount(e.target.value)} min='1' />
       </div>
       <div className="d-flex mb-3">
         <button className='btn btn-sm btn-secondary' style={{width: '110px'}}>Move Left</button>

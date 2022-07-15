@@ -90,9 +90,31 @@ const ScoreEdit = () => {
         }
         break
 
+      case 'measureInsert':
+        const end = action.payload.mIdx===document.length
+        const newNotes = [{type: 'whole', rest: null}]
+        for (let i = 0; i < action.payload.insertMeasureCount; i++) {
+          if (end) {
+            document.push({notes: structuredClone(newNotes)})
+          } else if (action.payload.mIdx===0) {
+            document.splice(0, 0, structuredClone(document[0]))
+            document[0].notes = structuredClone(newNotes)
+            delete document[1].clef
+            delete document[1].timeSig
+            console.log(document.slice(0,2))
+          } else {
+            document.splice(action.payload.mIdx, 0, {notes: structuredClone(newNotes)})
+          }
+        }
+        break
+
       case 'measureDelete':
-        console.log(action)
-        document.splice(action.payload.id.measure, 1)
+        // break if only one measure present
+        if (document.length===1) break
+        let mIdx = action.payload.id.measure
+        document.splice(mIdx, 1)
+        if (mIdx===document.length) mIdx--
+        setSelection({id: {measure: mIdx, note: 0}, type: 'note', note: document[mIdx].notes[0]})
         break
 
       case 'undo':
@@ -247,10 +269,10 @@ const ScoreEdit = () => {
         <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
 
           {/* left panel */}
-          <div className="border" style={{width: '150px'}}>
+          {/* <div className="border" style={{width: '150px'}}>
             left<br />
             {JSON.stringify(selection)}
-          </div>
+          </div> */}
 
           {/* center panel */}
           <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>

@@ -56,7 +56,7 @@ const InspectNote = (props) => {
           </tr>
           <tr>
             <td>Dotted:</td>
-            <td><b>{selection.note.dot!==undefined ? 'Yes' : 'No'}</b></td> 
+            <td><b>{selection.note.dot!==undefined ? 'yes' : 'no'}</b></td> 
           </tr>
         </tbody>
       </table>

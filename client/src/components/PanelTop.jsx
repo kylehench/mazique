@@ -47,7 +47,7 @@ const PanelTop = (props) => {
 
         {/* note duration controls */}
         <div>
-          <label>Duration:</label>
+          <label className="noselect">Duration:</label>
           <button 
             className={`btn btn-sm btn-outline-primary ms-2 ${newNote.type==='quarter' && 'active'}`}
             onClick={() => selectDuration('quarter')}
@@ -64,7 +64,7 @@ const PanelTop = (props) => {
         <div className="vr mx-3"></div>
         <div className="form-check border-left">
           <input className="form-check-input text text-sm" type="checkbox" onClick={() => toggleDot()} />
-          <label className="form-check-label">
+          <label className="form-check-label noselect">
             Dotted Note
           </label>
         </div>
@@ -72,7 +72,7 @@ const PanelTop = (props) => {
 
         {/* accidental controls */}
         <div>
-          <label>Accidental:</label>
+          <label className="noselect">Accidental:</label>
           <button 
             className={`btn btn-sm btn-outline-primary ms-2 ${accidental===-1 && 'active'}`}
             onClick={() => selectAccidental(-1)}
@@ -93,14 +93,14 @@ const PanelTop = (props) => {
       </div>
       <div>
       
-        <label className="me-1">Zoom: {zoom}%</label>
+        <label className="me-1 noselect">Zoom: {zoom}%</label>
         <div className="btn-group btn-sm" role="group" aria-label="Basic example">
           <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>
             <div className="d-flex">
               <Icon.ZoomIn size={18} />
            </div>
           </button>
-          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom-10)}>
+          <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=> {if (zoom>10) setZoom(zoom-10)}}>
             <div className="d-flex">
              <Icon.ZoomOut size={18} />
            </div>
