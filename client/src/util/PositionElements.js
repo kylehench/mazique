@@ -1,6 +1,6 @@
 // export default const 
 
-const positionElements = (measures, staves=[], symbols=[], start = 0) => {
+const PositionElements = (measures, staves=[], symbols=[], start = 0) => {
   let origin = {x: -40, y: 120}
   let x = origin.x
   let measureStartX = 0 // initial x value of measure
@@ -67,4 +67,4 @@ const positionElements = (measures, staves=[], symbols=[], start = 0) => {
   return { measures, staves, symbols }
 }
 
-export default positionElements
+export default PositionElements

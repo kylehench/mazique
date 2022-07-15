@@ -96,14 +96,10 @@ const PanelTop = (props) => {
         <label className="me-1 noselect">Zoom: {zoom}%</label>
         <div className="btn-group btn-sm" role="group" aria-label="Basic example">
           <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=>setZoom(zoom+10)}>
-            <div className="d-flex">
-              <Icon.ZoomIn size={18} />
-           </div>
+              <Icon.ZoomIn className='icon' size={18} />
           </button>
           <button type="button" className="btn btn-sm btn-primary fw-bold" onClick={()=> {if (zoom>10) setZoom(zoom-10)}}>
-            <div className="d-flex">
-             <Icon.ZoomOut size={18} />
-           </div>
+             <Icon.ZoomOut className='icon' size={18} />
           </button>
         </div>
       </div>
