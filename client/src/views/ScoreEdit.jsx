@@ -13,9 +13,10 @@ const ScoreEdit = () => {
   const [keyboardZoom, setKeyboardZoom] = useState(120)
   const [keyboardWidth, setKeyboardWidth] = useState(6/4)
   const [newNote, setNewNote] = useState({type: 'quarter'})
+  const [notePosition, setNotePosition] = useState({position: 'end'})
   const [selection, setSelection] = useState({})
   // bundled app state
-  const appState = {zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection}
+  const appState = {zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection, notePosition, setNotePosition}
 
   // document state
   const [document, setDocument] = useState([])
@@ -119,12 +120,13 @@ const ScoreEdit = () => {
         notes: [
           {
             type: 'quarter',
-            pitch: {
-              step: 'D',
-              // alter: 0,
-              octave: 4,
-            },
+            // pitch: {
+            //   step: 'D',
+            //   // alter: 0,
+            //   octave: 4,
+            // },
             dot: 1,
+            rest: null,
           },
           {
             type: 'quarter',
@@ -194,6 +196,24 @@ const ScoreEdit = () => {
           },
         },
       ]},
+      // {number:5,
+      //   notes: [
+      //   {
+      //     type: 'whole',
+      //     rest: null,
+      //   },
+      // ]},
+      // {number:6,
+      //   notes: [
+      //   {
+      //     type: 'half',
+      //     rest: null,
+      //   },
+      //   {
+      //     type: 'half',
+      //     rest: null,
+      //   },
+      // ]},
     ]
 
     // for (let i = 5; i < 55; i++) {

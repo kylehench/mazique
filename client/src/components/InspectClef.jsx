@@ -5,7 +5,7 @@ const InspectClef = (props) => {
 
   return (
     <div>
-      Clef:
+      <h5>Clef</h5>
       <select className="form-select mt-1"
         value={document[0].clef.sign}
         onChange={(e) => documentReducer({type: 'setClef', payload: {sign: e.target.value}})}

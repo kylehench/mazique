@@ -31,7 +31,7 @@ const positionElements = (measures, staves=[], symbols=[], start = 0) => {
       measureStartX = x
       // position notes
       measure.notes.forEach((note, nIdx, nArray) => {
-        if (note.pitch.alter) x+=30
+        if (note.pitch && note.pitch.alter) x+=30
         note.loc = {x: x-140, y: y}
         if (note.dot) x += 10
         if (note.type==='whole') x += 100

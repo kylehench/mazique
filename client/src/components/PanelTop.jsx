@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import * as Icon from 'react-feather'
 
 const PanelTop = (props) => {
-  const { documentReducer } = props
+  const { appState, documentReducer } = props
   const { undoStack, redoStack } = props.documentState
   const [accidental, setAccidental] = useState()
   const { zoom, setZoom, newNote, setNewNote } = props.appState
@@ -44,6 +44,8 @@ const PanelTop = (props) => {
 
       </div>
       <div className="d-flex align-items-center">
+
+        {/* note duration controls */}
         <div>
           <label>Duration:</label>
           <button 
@@ -67,6 +69,8 @@ const PanelTop = (props) => {
           </label>
         </div>
         <div className="vr mx-3"></div>
+
+        {/* accidental controls */}
         <div>
           <label>Accidental:</label>
           <button 

@@ -1,9 +1,16 @@
+- Overwrite vs append note
+- Delete Measure
+
 - Express/MongoDB backend
 - socket.io
 - adjustable piano keyboard size. Possibly, iPad view
+- update App favicon
+- line justification
 - React Bootstrap for beautiful dropdown selectors
     - dialog box that informs new users of inspection feature
 - user login (include guest login)
 - metronome
-- note length based on 
+- note length based on
+- sounds when pressing piano keys
 - song playback
+- vertically draggable notes (see @use-gesture/react)

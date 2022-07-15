@@ -24,7 +24,7 @@ const InspectTimeSig = (props) => {
   }
 
   return (<>
-    <span>Time Signature:</span>
+    <h5>Time Signature</h5>
     <table>
       <tbody>
         <tr>
