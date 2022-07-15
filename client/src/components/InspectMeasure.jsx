@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InspectMeasure = () => {
+const InspectMeasure = ({ selection, documentReducer }) => {
   return (
     <div>
       <h5>Measure</h5>
@@ -22,7 +22,7 @@ const InspectMeasure = () => {
         <button className='btn btn-sm btn-secondary' style={{width: '110px'}}>Move Left</button>
         <button className='btn btn-sm btn-secondary ms-2' style={{width: '110px'}}>Move Right</button>
       </div>
-      <button className='btn btn-sm btn-danger'  >Delete Measure</button>
+      <button className='btn btn-sm btn-danger' onClick={() => documentReducer({type: 'measureDelete', payload: selection})} >Delete Measure</button>
     </div>
   )
 }

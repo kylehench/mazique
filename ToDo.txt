@@ -1,3 +1,5 @@
+COMPLETE DELETE MEASURE - SELECT PREVIOUS OR NEXT MEASURE
+
 - Overwrite vs append note
 - Delete Measure
 

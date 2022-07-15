@@ -90,6 +90,11 @@ const ScoreEdit = () => {
         }
         break
 
+      case 'measureDelete':
+        console.log(action)
+        document.splice(action.payload.id.measure, 1)
+        break
+
       case 'undo':
         setRedoStack([...redoStack, document])
         nextDoc = undoStack.pop()
@@ -242,10 +247,10 @@ const ScoreEdit = () => {
         <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
 
           {/* left panel */}
-          {/* <div className="border" style={{width: '150px'}}>
+          <div className="border" style={{width: '150px'}}>
             left<br />
-            {JSON.stringify(newNote)}
-          </div> */}
+            {JSON.stringify(selection)}
+          </div>
 
           {/* center panel */}
           <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>

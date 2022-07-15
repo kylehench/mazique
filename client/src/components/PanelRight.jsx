@@ -15,7 +15,7 @@ const PanelRight = (props) => {
         </div>
         {(() => {
           switch(selection.type) {
-            case 'note' : return <InspectNote selection={selection} setSelection={setSelection} documentReducer={documentReducer} />
+            case 'note' : return <InspectNote selection={selection} documentReducer={documentReducer} />
             case 'timeSig' : return <InspectTimeSig measures={measures} document={document} documentReducer={documentReducer} />
             case 'clef' : return <InspectClef document={document} documentReducer={documentReducer} />
             default: return null

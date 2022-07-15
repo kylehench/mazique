@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import InspectMeasure from './InspectMeasure'
 
 const InspectNote = (props) => {
-  const { selection } = props
+  const { selection, documentReducer } = props
   const restPresent = selection.note.rest!==undefined
   const [ measureInsertBeforeCount, setMeasureInsertBeforeCount] = useState(1)
 
@@ -63,8 +63,7 @@ const InspectNote = (props) => {
 
       <hr className='my-2'/>
 
-      <InspectMeasure />
-      
+      <InspectMeasure selection={selection} documentReducer={documentReducer} />
       
     </div>
   )
