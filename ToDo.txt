@@ -1,4 +1,4 @@
-- Overwrite note
+- Overwrite note (CONTINUE)
 - Express/MongoDB backend
 - socket.io
 - adjustable piano keyboard size. Possibly, iPad view

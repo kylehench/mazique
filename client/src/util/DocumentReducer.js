@@ -28,7 +28,19 @@ const DocumentReducer = (action, documentState, appState) => {
       documentAttributes.clef = action.payload
       break
 
-    case 'writeNote':
+    case 'writeNote0':
+      const walk0 = (mIdx, nIdx, allowAppend = false) => {
+        // increments mIdx and/or nIdx to next note. If allowAppend is true, new measure may be added after last
+        if (nIdx<document[mIdx].notes.length-1) {
+          nIdx++
+        } else if (mIdx<document.length-1) {
+          mIdx++
+          nIdx = 0
+        } else if (allowAppend===true) {
+          DocumentReducer({type: 'measureInsert', payload: { mIdx, insertMeasureCount: 1}})
+        }
+      }
+      
       (() => {
         const { beats, beatsType } = documentAttributes.timeSig
         const note = action.payload.note
@@ -43,6 +55,11 @@ const DocumentReducer = (action, documentState, appState) => {
           durationLookup[type] = 1/(2**idx)
           typeLookup[1/(2**idx)] = durationLookup[type]
         })
+        const getDuration = (note) => {
+          let duration = durationLookup[note.type]
+          if (note.dot===1) duration += duration/2
+          return duration
+        }
 
         const noteDuration = durationLookup[note.type]
         let prevNoteDuration = durationLookup[prevNote.type]
@@ -51,14 +68,18 @@ const DocumentReducer = (action, documentState, appState) => {
         if (prevNote.dot!==undefined) delete prevNote.dot
         
         // overFlow = (-) (note shorter than prevNote), 0 (same length), or (+) (note longer than prevNote)
+        while (overflow>0) {
+          // delete notes to make space
+          prevNote = document[mIdx].notes[nIdx]
+          overflow -= getDuration(prevNote)
+          delete document[mIdx].notes[nIdx]
+          if (nIdx===document[mIdx].notes.length) {
+
+          }
+        }
         if (overflow===0) {
           document[mIdx].notes[nIdx] = structuredClone(note)
-          if (nIdx<document[mIdx].notes.length-1) {
-            nIdx++
-          } else if (mIdx<document.length-1) {
-            mIdx++
-            nIdx = 0
-          }
+          walk0(mIdx, nIdx)
           setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note})
         } else if (overflow<0) {
           document[mIdx].notes[nIdx] = structuredClone(note)
@@ -77,6 +98,132 @@ const DocumentReducer = (action, documentState, appState) => {
             if (overflow===0) break
           }
         }
+      })()
+      break
+
+    case 'writeNote':
+      const durationLookup = {}
+      const typeLookup = {}
+      const noteTypes = ['whole', 'half', 'quarter', 'eighth']
+      noteTypes.forEach((type, idx) => {
+        durationLookup[type] = 1/(2**idx)
+        typeLookup[1/(2**idx)] = durationLookup[type]
+      })
+      
+      const getDuration = (notes) => {
+        let duration = 0
+        let totalDuration = 0
+        if (!Array.isArray(notes)) notes = [notes]
+        for (let note of notes) {
+          duration = durationLookup[note.type]
+          if (note.dot===1) duration += duration/2
+          totalDuration += duration
+        }
+        return totalDuration
+      }
+
+      const walk = (mIdx, nIdx) => {
+        // increments mIdx and/or nIdx to next note. If allowAppend is true, new measure may be added after last
+        if (nIdx<document[mIdx].notes.length-1) {
+          nIdx++
+        } else if (mIdx<document.length-1) {
+          mIdx++
+          nIdx = 0
+        }
+        return {mIdx, nIdx}
+      }
+
+      const deleteNotes = (mIdx, nIdx, count) => {
+        for (let i = 0; i<count; i++) {
+          document[mIdx].notes.splice(nIdx, 1)
+          if (nIdx===document[mIdx].notes.length) {
+            mIdx++
+            nIdx = 0
+          } else if (mIdx===document.length) return
+        }
+      }
+
+      const fillDuration = (fillDuration, note) => {
+        let newNotes = []
+        let length = 0
+        for (let [type, duration] of Object.entries(durationLookup)) {
+          if (duration<=fillDuration-length) {
+            let newNote = structuredClone(note)
+            if (1.5*duration<=fillDuration-length) {
+              newNote.dot = 1
+              duration += duration/2
+            } else if (newNote.dot!==undefined) delete newNote.dot
+            newNote.type = type
+            newNotes.push(newNote)
+            length += duration
+          }
+          // if (length===0) setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note: note})
+          if (length===fillDuration) return newNotes
+        }
+      }
+      
+      (() => {
+        const note = action.payload.note
+        let mIdx = selection.id.measure  // measure idx
+        let nIdx = selection.id.note     // note idx
+        let insertNotes = []
+        
+        // let overwriteCount = 1
+        let duration = getDuration(note)
+
+        let insertedDuration = 0  // total duration of new note(s)
+        let deletedDuration = 0  // duration of deleted notes.
+        let deletedMeasureDuration = 0  // duration of deleted notes. resets at end of measure
+
+        while (insertedDuration<duration) {
+          // overwriteCount++
+          // nextNoteId = walk(end.mIdx, end.nIdx, true)
+          // length += getDuration(document[end.mIdx].notes[end.nIdx])
+          
+          // delete note to make space for new note. Save copy in case new note is shorter
+          let prevNote = document[mIdx].notes.splice(nIdx, 1)[0]  // note being overwritten
+          deletedDuration += getDuration(prevNote)
+          deletedMeasureDuration += getDuration(prevNote)
+
+          if (deletedDuration>=duration) {
+            // if deleted duration pushes into requested length, add remaining duration, resore remainder of last deleted note if necessary, and break
+            insertNotes = fillDuration(duration-insertedDuration, note)
+            document[mIdx].notes.splice(nIdx, 0, ...insertNotes)
+            insertedDuration += getDuration(insertNotes)
+            if (deletedDuration > duration) {
+              nIdx++
+              // resore remainder of last deleted note
+              console.log(deletedDuration)
+              console.log(duration)
+              console.log(insertedDuration)
+              console.log(fillDuration(duration-insertedDuration, prevNote))
+              document[mIdx].notes.splice(nIdx, 0, ...fillDuration(deletedDuration-duration, prevNote))
+            }
+            break
+          }
+          
+          if (nIdx===document[mIdx].notes.length) {
+            // if at end of measure, fill current measure and continue to next
+            insertNotes = fillDuration(deletedDuration, note)
+            document[mIdx].notes = document[mIdx].notes.concat(insertNotes)
+            insertedDuration += deletedDuration
+            deletedMeasureDuration = 0
+            if (mIdx===document.length-1) {
+              // if at last measure, break
+              console.log('fill and return')
+              break
+            }
+            mIdx++
+            nIdx = 0
+            console.log('end of measure')
+          }
+        }
+
+
+
+        // console.log(overwriteCount)
+        // deleteNotes(mIdx, nIdx, overwriteCount-1)
+        
       })()
       break
 

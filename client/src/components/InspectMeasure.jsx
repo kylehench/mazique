@@ -7,7 +7,7 @@ const InspectMeasure = ({ selection, documentReducer }) => {
   const measureInsert = (direction) => {
     let mIdx = selection.id.measure
     if (direction==='right') mIdx++
-    documentReducer({type: 'measureInsert', payload: {direction, mIdx, insertMeasureCount}})
+    documentReducer({type: 'measureInsert', payload: {mIdx, insertMeasureCount}})
   }
   
   return (
