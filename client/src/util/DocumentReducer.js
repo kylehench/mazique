@@ -105,6 +105,7 @@ const DocumentReducer = (action, documentState, appState) => {
       const durationLookup = {}
       const typeLookup = {}
       const noteTypes = ['whole', 'half', 'quarter', 'eighth']
+      let nextSelection = {}
       noteTypes.forEach((type, idx) => {
         durationLookup[type] = 1/(2**idx)
         typeLookup[1/(2**idx)] = durationLookup[type]
@@ -122,15 +123,15 @@ const DocumentReducer = (action, documentState, appState) => {
         return totalDuration
       }
 
-      const walk = (mIdx, nIdx) => {
-        // increments mIdx and/or nIdx to next note. If allowAppend is true, new measure may be added after last
+      const setNextSelection = (mIdx, nIdx) => {
+        // increments mIdx and/or nIdx to next note
         if (nIdx<document[mIdx].notes.length-1) {
           nIdx++
         } else if (mIdx<document.length-1) {
           mIdx++
           nIdx = 0
         }
-        return {mIdx, nIdx}
+        setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note: document[mIdx].notes[nIdx]})
       }
 
       const deleteNotes = (mIdx, nIdx, count) => {
@@ -193,37 +194,28 @@ const DocumentReducer = (action, documentState, appState) => {
             if (deletedDuration > duration) {
               nIdx++
               // resore remainder of last deleted note
-              console.log(deletedDuration)
-              console.log(duration)
-              console.log(insertedDuration)
-              console.log(fillDuration(duration-insertedDuration, prevNote))
               document[mIdx].notes.splice(nIdx, 0, ...fillDuration(deletedDuration-duration, prevNote))
+              nIdx--
             }
+            setNextSelection(mIdx, nIdx)
             break
           }
           
           if (nIdx===document[mIdx].notes.length) {
             // if at end of measure, fill current measure and continue to next
-            insertNotes = fillDuration(deletedDuration, note)
+            insertNotes = fillDuration(deletedMeasureDuration, note)
             document[mIdx].notes = document[mIdx].notes.concat(insertNotes)
-            insertedDuration += deletedDuration
-            deletedMeasureDuration = 0
             if (mIdx===document.length-1) {
               // if at last measure, break
-              console.log('fill and return')
+              setNextSelection(mIdx, nIdx)
               break
             }
+            insertedDuration += deletedMeasureDuration
+            deletedMeasureDuration = 0
             mIdx++
             nIdx = 0
-            console.log('end of measure')
           }
         }
-
-
-
-        // console.log(overwriteCount)
-        // deleteNotes(mIdx, nIdx, overwriteCount-1)
-        
       })()
       break
 
