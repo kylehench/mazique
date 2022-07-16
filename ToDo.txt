@@ -13,3 +13,7 @@
 - sounds when pressing piano keys
 - song playback
 - vertically draggable notes (see @use-gesture/react)
+
+
+--- Attributions ---
+<a href="https://iconscout.com/icons/musical" target="_blank">Musical Emoji Icon</a> by <a href="https://iconscout.com/contributors/twitter-inc">Twitter Emoji</a> on <a href="https://iconscout.com">IconScout</a>

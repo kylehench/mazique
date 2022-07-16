@@ -1,6 +1,7 @@
 const DocumentReducer = (action, documentState, appState) => {
   const { document, setDocument, undoStack, setUndoStack, redoStack, setRedoStack } = documentState
   const { updateDisplayStates, newNote, setNewNote, selection, setSelection, notePosition, setNotePosition } = appState
+  let documentAttributes = {}
   
   if (action.type!=='undo' && action.type!=='redo') {
     if (undoStack.length<110) {
@@ -8,6 +9,9 @@ const DocumentReducer = (action, documentState, appState) => {
     } else {
       setUndoStack([...undoStack.slice(10,undoStack.length), structuredClone(document)])
     }
+    documentAttributes = {timeSig: document[0].timeSig, clef: document[0].clef}
+    delete document[0].timeSig
+    delete document[0].clef
   } else {
     if (action.type==='undo' && undoStack.length===0) return
     if (action.type==='redo' && redoStack.length===0) return
@@ -17,43 +21,68 @@ const DocumentReducer = (action, documentState, appState) => {
   switch (action.type) {
 
     case 'setTimeSig':
-      document[0].timeSig = action.payload
+      documentAttributes.timeSig = action.payload
       break
 
     case 'setClef':
-      document[0].clef = action.payload
+      documentAttributes.clef = action.payload
       break
 
-    case 'editNote':
-      break
-
-    case 'appendNote':
-      const { beats, beatsType } = document[0].timeSig
-      const requestedNote = action.payload
-
-      // determine space available in measure
-      const durationLookup = {
-        eighth: 0.5,
-        quarter: 1,
-        half: 2,
-        whole: 4
-      }
-      const spaceAvailable = beats/beatsType*4 - document[document.length-1].notes.reduce((sum, note) => { return sum + durationLookup[note.type]}, 0)
-      if (spaceAvailable===0) {
-        document.push({
-          number: document.length,
-          notes: [requestedNote]
+    case 'writeNote':
+      (() => {
+        const { beats, beatsType } = documentAttributes.timeSig
+        const note = action.payload.note
+        let mIdx = selection.id.measure  // measure idx
+        let nIdx = selection.id.note     // note idx
+        let prevNote = structuredClone(document[mIdx].notes[nIdx])  // note being overwritten
+        
+        const durationLookup = {}
+        const typeLookup = {}
+        const noteTypes = ['whole', 'half', 'quarter', 'eighth']
+        noteTypes.forEach((type, idx) => {
+          durationLookup[type] = 1/(2**idx)
+          typeLookup[1/(2**idx)] = durationLookup[type]
         })
-      // } else if (spaceAvailable < 0) {
 
-      } else {
-        document[document.length-1].notes.push(requestedNote)
-      }
+        const noteDuration = durationLookup[note.type]
+        let prevNoteDuration = durationLookup[prevNote.type]
+        if (prevNote.dot===1) prevNoteDuration += prevNoteDuration/2
+        let overflow = noteDuration-prevNoteDuration
+        if (prevNote.dot!==undefined) delete prevNote.dot
+        
+        // overFlow = (-) (note shorter than prevNote), 0 (same length), or (+) (note longer than prevNote)
+        if (overflow===0) {
+          document[mIdx].notes[nIdx] = structuredClone(note)
+          if (nIdx<document[mIdx].notes.length-1) {
+            nIdx++
+          } else if (mIdx<document.length-1) {
+            mIdx++
+            nIdx = 0
+          }
+          setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note})
+        } else if (overflow<0) {
+          document[mIdx].notes[nIdx] = structuredClone(note)
+          nIdx++
+          for (let [type, duration] of Object.entries(durationLookup)) {
+            if (duration<= -overflow) {
+              if (1.5*duration=== -overflow) {
+                prevNote.dot = 1
+                duration += duration/2
+              }
+              prevNote.type = type
+              document[mIdx].notes.splice(nIdx, 0, structuredClone(prevNote))
+              overflow += duration
+            }
+            if (overflow===0) setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note: prevNote})
+            if (overflow===0) break
+          }
+        }
+      })()
       break
 
     case 'measureInsert':
       const end = action.payload.mIdx===document.length
-      const newNotes = [{type: 'whole', rest: null}]
+      const newNotes = [{type: 'whole', rest: {_measure: 'yes'}}]
       for (let i = 0; i < action.payload.insertMeasureCount; i++) {
         if (end) {
           document.push({notes: structuredClone(newNotes)})
@@ -62,7 +91,6 @@ const DocumentReducer = (action, documentState, appState) => {
           document[0].notes = structuredClone(newNotes)
           delete document[1].clef
           delete document[1].timeSig
-          console.log(document.slice(0,2))
         } else {
           document.splice(action.payload.mIdx, 0, {notes: structuredClone(newNotes)})
         }
@@ -96,6 +124,7 @@ const DocumentReducer = (action, documentState, appState) => {
       break
   }
   
+  document[0] = {...document[0], timeSig: documentAttributes.timeSig, clef: documentAttributes.clef}
   setRedoStack([])
   updateDisplayStates(document)
 }

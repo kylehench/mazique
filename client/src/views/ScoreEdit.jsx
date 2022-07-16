@@ -38,9 +38,10 @@ const ScoreEdit = () => {
   const [keyboardWidth, setKeyboardWidth] = useState(6/4)
   const [newNote, setNewNote] = useState({type: 'quarter'})
   const [notePosition, setNotePosition] = useState({position: 'end'})
-  const [selection, setSelection] = useState({})
+  const [selection, setSelection] = useState({id: {measure: 0, note: 0}})
+  const [pianoVisible, setPianoVisible] = useState(true)
   // bundled app state
-  const appState = { updateDisplayStates, zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection, notePosition, setNotePosition }
+  const appState = { updateDisplayStates, zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection, notePosition, setNotePosition, pianoVisible, setPianoVisible }
   
   const documentReducer = (action) => DocumentReducer(action, documentState, appState)
   
@@ -48,8 +49,9 @@ const ScoreEdit = () => {
     updateDisplayStates(ReferenceDocument)
   },[])
   
-  const placeNote = (note) => {
-    documentReducer({type: 'appendNote', payload: note})
+  const placeNoteCallback = (note) => {
+    if (selection.type!=='note') return
+    documentReducer({type: 'writeNote', payload: {note}})
   }
   
   return (
@@ -80,13 +82,14 @@ const ScoreEdit = () => {
         </div>
 
         {/* bottom panel */}
+        {pianoVisible &&
           <div className="border-top" style={{width: '100%', overflowX: 'auto'}}>
             <div className="" style={{width: '100%'}}>
-              <div style={{margin: '0 auto', width:`${keyboardWidth*keyboardZoom*10}px`}}><Keyboard placeNote={placeNote} newNote={newNote} setNewNote={setNewNote} keyboardZoom={keyboardZoom} setKeyboardZoom={setKeyboardZoom} setKeyboardWidth={setKeyboardWidth} />
+              <div style={{margin: '0 auto', width:`${keyboardWidth*keyboardZoom*10}px`}}><Keyboard appState={appState} placeNoteCallback={placeNoteCallback} />
+              </div>
             </div>
-            
           </div>
-        </div>
+        }
     </div>
   )
 }

@@ -3,7 +3,8 @@ import '../styles/keyboard.css'
 
 
 const Keyboard = (props) => {
-const { placeNote, newNote, keyboardZoom, setKeyboardWidth } = props
+const { placeNoteCallback, appState } = props
+const { newNote, keyboardZoom } = appState
 
   const keys = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
   const octaves = []
@@ -25,11 +26,11 @@ const { placeNote, newNote, keyboardZoom, setKeyboardWidth } = props
     zIndex: 2,
   }
 
-  const placeNoteCallBack = (step, octave) => {
+  const placeNote = (step, octave) => {
     const tmpNote = structuredClone(newNote)
     tmpNote.pitch = { ...tmpNote.pitch, step: step[0], octave}
     if (step.length===2) tmpNote.pitch.alter = 1
-    placeNote(tmpNote)
+    placeNoteCallback(tmpNote)
   }
 
   return (
@@ -39,7 +40,7 @@ const { placeNote, newNote, keyboardZoom, setKeyboardWidth } = props
           const whiteKey = (key.length===1)
           return <div
               key={`${octIdx}_${keyIdx}`}
-              onClick={() => placeNoteCallBack(key, octave+(keyIdx>=9))}
+              onClick={() => placeNote(key, octave+(keyIdx>=9))}
               className={whiteKey ? 'whiteKey' : 'blackKey'}
               style={whiteKey ? whiteKeyStyle : blackKeyStyle}
             >

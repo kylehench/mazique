@@ -2,12 +2,13 @@ import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as Icon from 'react-feather'
+import {ReactComponent as Piano} from "../assets/icon/piano.svg"
 
 const PanelTop = (props) => {
-  const { appState, documentReducer } = props
+  const { documentReducer } = props
+  const { zoom, setZoom, newNote, setNewNote, pianoVisible, setPianoVisible } = props.appState
   const { undoStack, redoStack } = props.documentState
   const [accidental, setAccidental] = useState()
-  const { zoom, setZoom, newNote, setNewNote } = props.appState
 
   const selectDuration = (duration) => {
     setNewNote({...newNote, type: duration})
@@ -28,18 +29,21 @@ const PanelTop = (props) => {
       newNote.dot = 1
     }
   }
-  
+
   return (
     <div className="border-bottom d-flex justify-content-between align-items-center" style={{}}>
       <div>
         <button className='btn btn-sm btn-primary m-1 ms-2'>
           <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
         </button>
-        <button className={`btn btn-sm border border-secondary m-1 ${undoStack.length===0 && 'disabled'}`} onClick={() => documentReducer({type: 'undo'})}>
+        <button className={`btn btn-sm border border-secondary m-1 shadow-none ${undoStack.length===0 && 'disabled'}`} onClick={() => documentReducer({type: 'undo'})}>
           <Icon.RotateCcw className='icon' size={16} />
         </button>
-        <button className={`btn btn-sm border border-secondary m-1 ${redoStack.length===0 && 'disabled'}`} onClick={() => documentReducer({type: 'redo'})}>
+        <button className={`btn btn-sm border border-secondary m-1 shadow-none ${redoStack.length===0 && 'disabled'}`} onClick={() => documentReducer({type: 'redo'})}>
           <Icon.RotateCw className='icon' size={16} />
+        </button>
+        <button className={`btn btn-sm border border-${pianoVisible ? 'primary' : 'secondary'} m-1 shadow-none`} onClick={() => setPianoVisible(!pianoVisible)}>
+          <Piano className='icon' width='16px' />
         </button>
 
       </div>
