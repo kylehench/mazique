@@ -34,8 +34,8 @@ const ScoreEdit = () => {
   
   // application states
   const [zoom, setZoom] = useState(100)
-  const [keyboardZoom, setKeyboardZoom] = useState(120)
-  const [keyboardWidth, setKeyboardWidth] = useState(6/4)
+  const [keyboardZoom, setKeyboardZoom] = useState(145)
+  const [keyboardWidth, setKeyboardWidth] = useState(5/4)
   const [newNote, setNewNote] = useState({type: 'quarter'})
   const [notePosition, setNotePosition] = useState({position: 'end'})
   const [selection, setSelection] = useState({id: {measure: 0, note: 0}})

@@ -2,7 +2,8 @@
 - socket.io
 - adjustable piano keyboard size. Possibly, iPad view
 - icons for note duration and pitch adjustments
-- complete move right/move left features
+- complete move measure right/move left features
+- export MusicXML
 - update App favicon
 - line justification
 - add alto and tenor clef

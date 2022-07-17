@@ -8,7 +8,7 @@ const { newNote, keyboardZoom } = appState
 
   const keys = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
   const octaves = []
-  for (let octave=2; octave<=7; octave++) {
+  for (let octave=2; octave<=6; octave++) {
     octaves.push(octave)
   }
   // setKeyboardWidth(octaves.length/4)
@@ -16,7 +16,7 @@ const { newNote, keyboardZoom } = appState
   const keyScale = keyboardZoom/100
   const whiteKeyStyle = {
     height:`${keyScale*105}px`,
-    width:`${keyScale*35}px`,
+    width:`${keyScale*35.5}px`,
   }
   const blackKeyStyle = {
     height:`${keyScale*65}px`,
