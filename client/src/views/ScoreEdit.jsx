@@ -69,7 +69,7 @@ const ScoreEdit = () => {
           </div> */}
 
           {/* center panel */}
-          <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#385f94'}}>
+          <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#315fa3'}}>
             <div style={{width: '100%', padding:'20px 25px'}}>
               <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white', boxShadow: '0px 0px 12px 10px rgba(0, 0, 0, 0.25)'}}>
                 <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} clef={clef} />

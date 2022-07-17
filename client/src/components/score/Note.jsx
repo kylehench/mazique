@@ -66,7 +66,7 @@ const Note = (props) => {
     let dotYValue = 435.8264+y
     let dotXValue = 566.106+x
     if (!restPresent) {
-      if (Math.abs(step)<5 && step%2===0) dotYValue = -12.4014
+      if (Math.abs(step)<5 && step%2===0) dotYValue -= 12.4014
       dotYValue -= step*12.4016
     } else {
       dotYValue -= 12.4014

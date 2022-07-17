@@ -1,7 +1,8 @@
-- Overwrite note (CONTINUE - fix insert dotted note bug)
 - Express/MongoDB backend
 - socket.io
 - adjustable piano keyboard size. Possibly, iPad view
+- icons for note duration and pitch adjustments
+- complete move right/move left features
 - update App favicon
 - line justification
 - add alto and tenor clef

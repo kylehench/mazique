@@ -28,84 +28,10 @@ const DocumentReducer = (action, documentState, appState) => {
       documentAttributes.clef = action.payload
       break
 
-    case 'writeNote0':
-      const walk0 = (mIdx, nIdx, allowAppend = false) => {
-        // increments mIdx and/or nIdx to next note. If allowAppend is true, new measure may be added after last
-        if (nIdx<document[mIdx].notes.length-1) {
-          nIdx++
-        } else if (mIdx<document.length-1) {
-          mIdx++
-          nIdx = 0
-        } else if (allowAppend===true) {
-          DocumentReducer({type: 'measureInsert', payload: { mIdx, insertMeasureCount: 1}})
-        }
-      }
-      
-      (() => {
-        const { beats, beatsType } = documentAttributes.timeSig
-        const note = action.payload.note
-        let mIdx = selection.id.measure  // measure idx
-        let nIdx = selection.id.note     // note idx
-        let prevNote = structuredClone(document[mIdx].notes[nIdx])  // note being overwritten
-        
-        const durationLookup = {}
-        const typeLookup = {}
-        const noteTypes = ['whole', 'half', 'quarter', 'eighth']
-        noteTypes.forEach((type, idx) => {
-          durationLookup[type] = 1/(2**idx)
-          typeLookup[1/(2**idx)] = durationLookup[type]
-        })
-        const getDuration = (note) => {
-          let duration = durationLookup[note.type]
-          if (note.dot===1) duration += duration/2
-          return duration
-        }
-
-        const noteDuration = durationLookup[note.type]
-        let prevNoteDuration = durationLookup[prevNote.type]
-        if (prevNote.dot===1) prevNoteDuration += prevNoteDuration/2
-        let overflow = noteDuration-prevNoteDuration
-        if (prevNote.dot!==undefined) delete prevNote.dot
-        
-        // overFlow = (-) (note shorter than prevNote), 0 (same length), or (+) (note longer than prevNote)
-        while (overflow>0) {
-          // delete notes to make space
-          prevNote = document[mIdx].notes[nIdx]
-          overflow -= getDuration(prevNote)
-          delete document[mIdx].notes[nIdx]
-          if (nIdx===document[mIdx].notes.length) {
-
-          }
-        }
-        if (overflow===0) {
-          document[mIdx].notes[nIdx] = structuredClone(note)
-          walk0(mIdx, nIdx)
-          setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note})
-        } else if (overflow<0) {
-          document[mIdx].notes[nIdx] = structuredClone(note)
-          nIdx++
-          for (let [type, duration] of Object.entries(durationLookup)) {
-            if (duration<= -overflow) {
-              if (1.5*duration=== -overflow) {
-                prevNote.dot = 1
-                duration += duration/2
-              }
-              prevNote.type = type
-              document[mIdx].notes.splice(nIdx, 0, structuredClone(prevNote))
-              overflow += duration
-            }
-            if (overflow===0) setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note: prevNote})
-            if (overflow===0) break
-          }
-        }
-      })()
-      break
-
     case 'writeNote':
       const durationLookup = {}
       const typeLookup = {}
       const noteTypes = ['whole', 'half', 'quarter', 'eighth']
-      let nextSelection = {}
       noteTypes.forEach((type, idx) => {
         durationLookup[type] = 1/(2**idx)
         typeLookup[1/(2**idx)] = durationLookup[type]
@@ -134,16 +60,6 @@ const DocumentReducer = (action, documentState, appState) => {
         setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note: document[mIdx].notes[nIdx]})
       }
 
-      const deleteNotes = (mIdx, nIdx, count) => {
-        for (let i = 0; i<count; i++) {
-          document[mIdx].notes.splice(nIdx, 1)
-          if (nIdx===document[mIdx].notes.length) {
-            mIdx++
-            nIdx = 0
-          } else if (mIdx===document.length) return
-        }
-      }
-
       const fillDuration = (fillDuration, note) => {
         let newNotes = []
         let length = 0
@@ -158,7 +74,6 @@ const DocumentReducer = (action, documentState, appState) => {
             newNotes.push(newNote)
             length += duration
           }
-          // if (length===0) setSelection({id: {measure: mIdx, note: nIdx}, type: 'note', note: note})
           if (length===fillDuration) return newNotes
         }
       }
@@ -167,27 +82,22 @@ const DocumentReducer = (action, documentState, appState) => {
         const note = action.payload.note
         let mIdx = selection.id.measure  // measure idx
         let nIdx = selection.id.note     // note idx
-        let insertNotes = []
+        let insertNotes = []             // array of notes
         
-        // let overwriteCount = 1
         let duration = getDuration(note)
 
-        let insertedDuration = 0  // total duration of new note(s)
-        let deletedDuration = 0  // duration of deleted notes.
+        let insertedDuration = 0        // total duration of new note(s)
+        let deletedDuration = 0         // duration of deleted notes.
         let deletedMeasureDuration = 0  // duration of deleted notes. resets at end of measure
 
         while (insertedDuration<duration) {
-          // overwriteCount++
-          // nextNoteId = walk(end.mIdx, end.nIdx, true)
-          // length += getDuration(document[end.mIdx].notes[end.nIdx])
-          
           // delete note to make space for new note. Save copy in case new note is shorter
           let prevNote = document[mIdx].notes.splice(nIdx, 1)[0]  // note being overwritten
           deletedDuration += getDuration(prevNote)
           deletedMeasureDuration += getDuration(prevNote)
 
           if (deletedDuration>=duration) {
-            // if deleted duration pushes into requested length, add remaining duration, resore remainder of last deleted note if necessary, and break
+            // if deleted duration at or exceeds requested note length, add remaining duration of note, resore remainder of last deleted note if necessary, and break
             insertNotes = fillDuration(duration-insertedDuration, note)
             document[mIdx].notes.splice(nIdx, 0, ...insertNotes)
             insertedDuration += getDuration(insertNotes)
