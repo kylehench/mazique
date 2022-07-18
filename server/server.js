@@ -15,5 +15,6 @@ app.use(express.urlencoded({ extended: true }))   // This allows JSON Objects wi
 
 require('./routes/user.routes')(app)
 require('./routes/song.routes')(app)
+require('./routes/score.routes')(app)
 const port = 8000
 app.listen(port, () => console.log(`Listening on port: ${port}`))
