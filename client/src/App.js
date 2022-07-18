@@ -37,7 +37,7 @@ function App() {
         <Route path="/songs/:id/edit" element={<SongsEdit />} />
         <Route path="/songs/:id/" element={<Song />} />
 
-        <Route path="/scores/" element={<ScoreEdit />} />
+        <Route path="/scores/:id/" element={<ScoreEdit />} />
         {/* <Route path="/users" element={<UserList />} />
         <Route path="/login" element={<LoginForm />} /> */}
       </Routes>

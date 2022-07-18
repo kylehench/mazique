@@ -1,7 +1,7 @@
 const Score = require('../models/score.model')
 
 module.exports.createScore = (request, response) => {
-  Score.create(request.body)
+  Score.create({})
     .then(score => response.json(score))
     .catch(err => response.status(400).json(err))
 }
@@ -9,6 +9,12 @@ module.exports.createScore = (request, response) => {
 module.exports.readOneScore = (request, response) => {
   Score.findOne({_id: request.params._id})
     .then(score => response.json(score))
+    .catch(err => response.status(400).json(err))
+}
+
+module.exports.readAllScores = (request, response) => {
+  Score.find()
+    .then(scores => response.json(scores))
     .catch(err => response.status(400).json(err))
 }
 

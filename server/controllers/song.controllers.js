@@ -1,10 +1,13 @@
 const Song = require('../models/song.model')
+const Score = require('../models/score.model')
 
 module.exports.createSong = async(request, response) => {
   // check that song name is unique
   try {
     const songs = await Song.find({title: request.body.title})
     if (songs.length!==0) return response.status(400).json( {errors: {title: {message: 'Song title already taken'}}})
+    const newScore = await Score.create({})
+    request.body.score_id = newScore._id
     const song = await Song.create(request.body)
     response.json(song)
   } catch(err) {

@@ -38,13 +38,17 @@ const Songs = () => {
             <td>{song.title}</td>
             <td>{song.composer}</td>
             <td>{song.genre}</td>
-            <td>
+            <td className="d-flex">
               <button className='btn btn-sm btn-secondary me-2'>
                 <Link to={`/songs/${song._id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Details</Link>
               </button>
               <button className='btn btn-sm btn-warning me-2'>
-                <Link to={`/songs/${song._id}/edit`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Edit</Link>
+                <Link to={`/songs/${song._id}/edit`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Edit Details</Link>
               </button>
+              <button className='btn btn-sm btn-success'>
+                <Link to={`/scores/${song.score_id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Edit Score</Link>
+              </button>
+              <div className="vr mx-3"></div>
               <button className='btn btn-sm btn-danger' onClick={() => deleteSong(song._id)}>Delete</button>
             </td>
           </tr>)}

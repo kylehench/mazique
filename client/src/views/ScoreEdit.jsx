@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import PanelTop from '../components/PanelTop'
 import PanelRight from '../components/PanelRight'
@@ -6,12 +7,14 @@ import PositionElements from '../util/PositionElements'
 import Score from '../components/score/Score'
 import Keyboard from '../components/Keyboard'
 import DocumentReducer from '../util/DocumentReducer'
-import ReferenceDocument from '../util/ReferenceDocument'
+// import ReferenceDocument from '../util/ReferenceDocument'
+import { useParams } from 'react-router-dom'
 
 const ScoreEdit = () => {
+  const { id } = useParams()
   
   // document state
-  const [document, setDocument] = useState(ReferenceDocument)
+  const [document, setDocument] = useState([])
   const [undoStack, setUndoStack] = useState([])
   const [redoStack, setRedoStack] = useState([])
   // bundled document state
@@ -46,7 +49,12 @@ const ScoreEdit = () => {
   const documentReducer = (action) => DocumentReducer(action, documentState, appState)
   
   useEffect(() => {
-    updateDisplayStates(ReferenceDocument)
+    axios.get(`http://localhost:8000/api/scores/${id}`)
+      .then(res => {
+        setDocument(res.data.document)
+        updateDisplayStates(res.data.document)
+      })
+      .catch(err => console.log(err))
   },[])
   
   const placeNoteCallback = (note) => {

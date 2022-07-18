@@ -7,6 +7,9 @@ module.exports = app => {
   // read one score
   app.get('/api/scores/:_id', ScoreController.readOneScore)
   
+  // read all scores
+  app.get('/api/scores', ScoreController.readAllScores)
+  
   // update score
   app.put('/api/scores/:_id', ScoreController.updateScore)
   

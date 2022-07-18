@@ -20,6 +20,9 @@ const SongSchema = new mongoose.Schema({
   comments: {
     type: String,
     required: false
+  },
+  score_id: {
+    type: mongoose.ObjectId
   }
 }, {timestamps: true})
 
