@@ -29,8 +29,8 @@ const Score = (props) => {
         {/* render symbols */}
         { symbols.map(symbol => {
           if (symbol.type==='clef') return <Clef key={symbol.key} data={symbol.data} setSelection={setSelection} />
-          if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} setSelection={setSelection} />
-          if (symbol.type==='barLine') return <BarLine key={symbol.key} data={symbol.data} setSelection={setSelection} />
+          else if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} setSelection={setSelection} />
+          else if (symbol.type==='barLine') return <BarLine key={symbol.key} data={symbol.data} setSelection={setSelection} />
         }) }
         
       </g>

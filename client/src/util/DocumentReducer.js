@@ -38,6 +38,7 @@ const DocumentReducer = (action, documentState, appState) => {
       })
       
       const getDuration = (notes) => {
+        // calculates duration of note(s). Accepts single note or array of notes.
         let duration = 0
         let totalDuration = 0
         if (!Array.isArray(notes)) notes = [notes]
@@ -50,7 +51,7 @@ const DocumentReducer = (action, documentState, appState) => {
       }
 
       const setNextSelection = (mIdx, nIdx) => {
-        // increments mIdx and/or nIdx to next note
+        // increments mIdx and/or nIdx to next note if not at last note
         if (nIdx<document[mIdx].notes.length-1) {
           nIdx++
         } else if (mIdx<document.length-1) {

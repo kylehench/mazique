@@ -1,4 +1,0 @@
-type: whole, quarter, half
-rest: null
-
-
