@@ -40,7 +40,7 @@ const Songs = () => {
             <td>{song.genre}</td>
             <td className="d-flex">
               <button className='btn btn-sm btn-secondary me-2'>
-                <Link to={`/songs/${song._id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Details</Link>
+                <Link to={`/songs/${song._id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>View Details</Link>
               </button>
               <button className='btn btn-sm btn-warning me-2'>
                 <Link to={`/songs/${song._id}/edit`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Edit Details</Link>
