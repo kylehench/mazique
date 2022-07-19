@@ -4,15 +4,7 @@ module.exports.defaultScoreDocument = () => {
       // number:1,
       notes: [
         {
-          type: 'quarter',
-          rest: null,
-        },
-        {
-          type: 'quarter',
-          rest: null,
-        },
-        {
-          type: 'quarter',
+          type: 'whole',
           rest: null,
         },
       ]},
