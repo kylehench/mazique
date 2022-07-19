@@ -55,7 +55,11 @@ const PanelTop = (props) => {
         <div>
           <label className="noselect">Duration:</label>
           <button 
-            className={`btn btn-sm btn-outline-primary ms-2 ${newNote.type==='quarter' && 'active'}`}
+            className={`btn btn-sm btn-outline-primary ms-2 ${newNote.type==='eighth' && 'active'}`}
+            onClick={() => selectDuration('eighth')}
+            >Eighth</button>
+          <button 
+            className={`btn btn-sm btn-outline-primary ms-1 ${newNote.type==='quarter' && 'active'}`}
             onClick={() => selectDuration('quarter')}
             >Quarter</button>
           <button 
