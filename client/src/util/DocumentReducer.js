@@ -75,7 +75,7 @@ const DocumentReducer = (action, documentState, appState) => {
             newNotes.push(newNote)
             length += duration
           }
-          if (length===fillDuration) return newNotes
+          if (length===fillDuration) return newNotes.reverse()
         }
       }
       
@@ -92,7 +92,7 @@ const DocumentReducer = (action, documentState, appState) => {
         let deletedMeasureDuration = 0  // duration of deleted notes. resets at end of measure
 
         while (insertedDuration<duration) {
-          // delete note to make space for new note. Save copy in case new note is shorter
+          // delete note to make space for new note. Save reference in case new note is shorter
           let prevNote = document[mIdx].notes.splice(nIdx, 1)[0]  // note being overwritten
           deletedDuration += getDuration(prevNote)
           deletedMeasureDuration += getDuration(prevNote)
@@ -132,7 +132,12 @@ const DocumentReducer = (action, documentState, appState) => {
 
     case 'measureInsert':
       const end = action.payload.mIdx===document.length
-      const newNotes = [{type: 'whole', rest: {_measure: 'yes'}}]
+      let newNotes = []
+      if (documentAttributes.timeSig.beats===3) {
+        newNotes.push({type: 'quarter', rest: {_measure: 'yes'}},{type: 'quarter', rest: {_measure: 'yes'}},{type: 'quarter', rest: {_measure: 'yes'}})
+      } else {
+        newNotes.push({type: 'whole', rest: {_measure: 'yes'}})
+      }
       for (let i = 0; i < action.payload.insertMeasureCount; i++) {
         if (end) {
           document.push({notes: structuredClone(newNotes)})
