@@ -1,3 +1,4 @@
+- write rest note
 - socket.io
 - adjustable piano keyboard size. Possibly, iPad view
 - icons for note duration and pitch adjustments
