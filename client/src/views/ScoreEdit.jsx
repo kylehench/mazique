@@ -34,7 +34,7 @@ const ScoreEdit = () => {
     setSymbols(elements.symbols)
     setClef(elements.measures[0].clef.sign)
   }
-  
+
   // application states
   const [zoom, setZoom] = useState(100)
   const [keyboardZoom, setKeyboardZoom] = useState(145)
@@ -43,8 +43,21 @@ const ScoreEdit = () => {
   const [notePosition, setNotePosition] = useState({position: 'end'})
   const [selection, setSelection] = useState({id: {measure: 0, note: 0}})
   const [pianoVisible, setPianoVisible] = useState(true)
+  const [successMessage, setSuccessMessage] = useState('')
+
+  const updateScoreAPI = () => {
+    axios.put(`http://localhost:8000/api/scores/${id}`, {document: document})
+      .then(res => {
+        setSuccessMessage('btn-success')
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 2000)
+      })
+      .catch(err => console.log(err))
+  }
+  
   // bundled app state
-  const appState = { updateDisplayStates, zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection, notePosition, setNotePosition, pianoVisible, setPianoVisible }
+  const appState = { updateDisplayStates, zoom, setZoom, keyboardZoom, setKeyboardZoom, keyboardWidth, setKeyboardWidth, newNote, setNewNote, selection, setSelection, notePosition, setNotePosition, pianoVisible, setPianoVisible, updateScoreAPI, successMessage, setSuccessMessage }
   
   const documentReducer = (action) => DocumentReducer(action, documentState, appState)
   

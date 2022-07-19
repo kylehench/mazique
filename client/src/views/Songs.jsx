@@ -21,9 +21,9 @@ const Songs = () => {
   return (
     <div className='container mt-4'>
       <div className="d-flex justify-content-between">
-        <h2>Songs I Want to Learn</h2>
+        <h2>Songs I Want to Write</h2>
         <div>
-          <button className='btn btn-secondary' onClick={() => navigate('/')}>Home</button>
+          {/* <button className='btn btn-secondary' onClick={() => navigate('/')}>Home</button> */}
         </div>
       </div>
       <table className="table">

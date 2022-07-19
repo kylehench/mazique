@@ -6,7 +6,7 @@ import {ReactComponent as Piano} from "../assets/icon/piano.svg"
 
 const PanelTop = (props) => {
   const { documentReducer } = props
-  const { zoom, setZoom, newNote, setNewNote, pianoVisible, setPianoVisible } = props.appState
+  const { zoom, setZoom, newNote, setNewNote, pianoVisible, setPianoVisible, updateScoreAPI, successMessage, setSuccessMessage } = props.appState
   const { undoStack, redoStack } = props.documentState
   const [accidental, setAccidental] = useState()
 
@@ -36,6 +36,9 @@ const PanelTop = (props) => {
         <button className='btn btn-sm btn-primary m-1 ms-2'>
           <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
         </button>
+        <button className={`btn btn-sm border border-secondary m-1 shadow-none ${successMessage}`} onClick={() => updateScoreAPI()}>
+          <Icon.Save className='icon' size={16} />
+        </button>
         <button className={`btn btn-sm border border-secondary m-1 shadow-none ${undoStack.length===0 && 'disabled'}`} onClick={() => documentReducer({type: 'undo'})}>
           <Icon.RotateCcw className='icon' size={16} />
         </button>
@@ -45,7 +48,6 @@ const PanelTop = (props) => {
         <button className={`btn btn-sm border border-${pianoVisible ? 'primary' : 'secondary'} m-1 shadow-none`} onClick={() => setPianoVisible(!pianoVisible)}>
           <Piano className='icon' width='16px' />
         </button>
-
       </div>
       <div className="d-flex align-items-center">
 

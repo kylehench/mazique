@@ -39,8 +39,14 @@ module.exports.updateSong = async(request, response) => {
   }
 }
 
-module.exports.deleteSong = (request, response) => {
-  Song.deleteOne({_id: request.params._id})
-    .then(deleteConfirmation => response.json(deleteConfirmation))
-    .catch(err => response.status(400).json(err))
+module.exports.deleteSong = async(request, response) => {
+  // deletes song and foreign score
+  try {
+    const song = await Song.findOne({_id: request.params._id})
+    const deleteScoreResponse = await Score.deleteOne({_id: song.score_id})
+    const deleteSongResponse = await Song.deleteOne({_id: song._id})
+    response.json(deleteSongResponse)
+  } catch(err) {
+    response.status(400).json(err)
+  }
 }

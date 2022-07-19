@@ -31,7 +31,7 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Songs />} />
         <Route path="/songs" element={<Songs />} />
         <Route path="/songs/new" element={<SongsNew />} />
         <Route path="/songs/:id/edit" element={<SongsEdit />} />
