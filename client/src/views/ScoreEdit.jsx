@@ -7,7 +7,7 @@ import PositionElements from '../util/PositionElements'
 import Score from '../components/score/Score'
 import Keyboard from '../components/Keyboard'
 import DocumentReducer from '../util/DocumentReducer'
-// import ReferenceDocument from '../util/ReferenceDocument'
+import ReferenceDocument from '../util/ReferenceDocument'
 import { useParams } from 'react-router-dom'
 
 const ScoreEdit = () => {
@@ -64,6 +64,8 @@ const ScoreEdit = () => {
   useEffect(() => {
     axios.get(`http://localhost:8000/api/scores/${id}`)
       .then(res => {
+        if (!res.data.document[0].timeSig) res.data.document[0].timeSig = ReferenceDocument[0].timeSig
+        if (!res.data.document[0].clef) res.data.document[0].clef = ReferenceDocument[0].clef
         setDocument(res.data.document)
         updateDisplayStates(res.data.document)
       })
@@ -84,9 +86,9 @@ const ScoreEdit = () => {
         <div className="d-flex" style={{flex: '1', overflow:'auto'}}>
 
           {/* left panel */}
-          {/* <div className="border" style={{width: '150px'}}>
+          {/* <div className="border" style={{width: '250px'}}>
             left<br />
-            {JSON.stringify(selection)}
+            {JSON.stringify(document)}
           </div> */}
 
           {/* center panel */}

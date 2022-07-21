@@ -41,7 +41,7 @@ const PositionElements = (measures, staves=[], symbols=[], start = 0) => {
       
       // add barline
       x += 50
-      if (mIdx !== mArray.length - 1){
+      if (mIdx !== mArray.length - 1) {
         symbols.push({type: 'barLine', key: symbols.length.toString(), data: {x: x, y: y}})
       } else {
         x += 20

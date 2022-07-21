@@ -1,6 +1,6 @@
 let ReferenceDocument = [
   { number:1,
-    clef: {sign: 'bass'},
+    clef: {sign: 'treble'},
     timeSig: {beats: 4, beatsType: 4},
     notes: [
       {
