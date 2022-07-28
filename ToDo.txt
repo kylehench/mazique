@@ -4,7 +4,6 @@
 - icons for note duration and pitch adjustments
 - complete move measure right/move left features
 - export MusicXML
-- update App favicon
 - line justification
 - add alto and tenor clef
 - React Bootstrap for beautiful dropdown selectors
