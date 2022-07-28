@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import * as Icon from 'react-feather'
-import {ReactComponent as Piano} from "../assets/icon/piano.svg"
+import {ReactComponent as Piano} from "../assets/icon2/piano.svg"
 
 const PanelTop = (props) => {
   const { documentReducer } = props

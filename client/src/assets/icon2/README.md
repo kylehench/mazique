@@ -1,0 +1,1 @@
+note: folder is named icon2 in order to avoid .gitignore exclusion
