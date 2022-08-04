@@ -152,6 +152,10 @@ const DocumentReducer = (action, documentState, appState) => {
       }
       break
 
+    case 'measureMove':
+      console.log(JSON.stringify(action.payload))
+      break
+
     case 'measureDelete':
       // break if only one measure present
       if (document.length===1) break

@@ -9,6 +9,11 @@ const InspectMeasure = ({ selection, documentReducer }) => {
     if (direction==='right') mIdx++
     documentReducer({type: 'measureInsert', payload: {mIdx, insertMeasureCount}})
   }
+
+  const measureMove = (direction) => {
+    let mIdx = selection.id.measure
+    documentReducer({type: 'measureMove', payload: {mIdx, moveMeasureCount, direction}})
+  }
   
   return (
     <div>
@@ -28,8 +33,8 @@ const InspectMeasure = ({ selection, documentReducer }) => {
         <input type="number" className='form-control form-control-sm ms-2 my-2' value={moveMeasureCount} onChange={(e) => setMoveMeasureCount(e.target.value)} min='1' />
       </div>
       <div className="d-flex mb-3">
-        <button className='btn btn-sm btn-secondary' style={{width: '110px'}}>Move Left</button>
-        <button className='btn btn-sm btn-secondary ms-2' style={{width: '110px'}}>Move Right</button>
+        <button className='btn btn-sm btn-secondary' onClick={() => measureMove('left')} style={{width: '110px'}}>Move Left</button>
+        <button className='btn btn-sm btn-secondary ms-2' onClick={() => measureMove('right')} style={{width: '110px'}}>Move Right</button>
       </div>
       <button className='btn btn-sm btn-danger' onClick={() => documentReducer({type: 'measureDelete', payload: selection})} >Delete Measure</button>
     </div>
