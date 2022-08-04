@@ -153,7 +153,16 @@ const DocumentReducer = (action, documentState, appState) => {
       break
 
     case 'measureMove':
-      console.log(JSON.stringify(action.payload))
+      (() => {
+        let {mIdx, moveMeasureCount, direction} = action.payload
+        const removed = document.splice(mIdx, 1)
+        if (direction==='left') moveMeasureCount = -moveMeasureCount
+        let newMIdx = mIdx + moveMeasureCount
+        if (newMIdx < 0) newMIdx = 0
+        if (newMIdx > document.length) newMIdx = document.length
+        document.splice(newMIdx, 0, ...removed)
+        setSelection({id: {measure: newMIdx, note: selection.id.note}, type: 'note', note: document[newMIdx].notes[selection.id.note]})
+      })()
       break
 
     case 'measureDelete':

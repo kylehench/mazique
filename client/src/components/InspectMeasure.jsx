@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 
 const InspectMeasure = ({ selection, documentReducer }) => {
-  const [insertMeasureCount, setInsertMeasureCount] = useState(1)
-  const [moveMeasureCount, setMoveMeasureCount] = useState(1)
+  const [insertMeasureCount, setInsertMeasureCount] = useState('1')
+  const [moveMeasureCount, setMoveMeasureCount] = useState('1')
   
   const measureInsert = (direction) => {
     let mIdx = selection.id.measure
     if (direction==='right') mIdx++
-    documentReducer({type: 'measureInsert', payload: {mIdx, insertMeasureCount}})
+    documentReducer({type: 'measureInsert', payload: {mIdx, insertMeasureCount: parseInt(insertMeasureCount)}})
   }
 
   const measureMove = (direction) => {
     let mIdx = selection.id.measure
-    documentReducer({type: 'measureMove', payload: {mIdx, moveMeasureCount, direction}})
+    documentReducer({type: 'measureMove', payload: {mIdx, moveMeasureCount: parseInt(moveMeasureCount), direction}})
   }
   
   return (
