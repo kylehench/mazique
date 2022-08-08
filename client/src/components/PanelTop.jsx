@@ -73,7 +73,7 @@ const PanelTop = (props) => {
         </div>
         <div className="vr mx-3"></div>
         <div className="form-check border-left">
-          <input className="form-check-input text text-sm" type="checkbox" onClick={() => toggleDot()} />
+          <input className="form-check-input text text-sm" type="checkbox" onClick={() => toggleDot()} disabled={newNote.type==='eighth'} />
           <label className="form-check-label noselect">
             Dotted Note
           </label>

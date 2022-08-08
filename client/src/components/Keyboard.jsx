@@ -16,7 +16,7 @@ const { newNote, keyboardZoom } = appState
   const keyScale = keyboardZoom/100
   const whiteKeyStyle = {
     height:`${keyScale*105}px`,
-    width:`${keyScale*35.5}px`,
+    width:`${keyScale*35.3}px`,
   }
   const blackKeyStyle = {
     height:`${keyScale*65}px`,

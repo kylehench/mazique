@@ -81,6 +81,10 @@ const DocumentReducer = (action, documentState, appState) => {
       
       (() => {
         const note = action.payload.note
+        if (note.type==='eighth' && note.dot!==undefined) {
+          // ensure note is not dotted if smallest duration is selected
+          delete note.dot
+        }
         let mIdx = selection.id.measure  // measure idx
         let nIdx = selection.id.note     // note idx
         let insertNotes = []             // array of notes
