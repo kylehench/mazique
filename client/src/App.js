@@ -1,8 +1,7 @@
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import Songs from "./views/Songs"
-import Dashboard from './views/Dashboard'
 import SongsNew from './views/SongsNew'
 import SongsEdit from './views/SongsEdit'
 import Song from './views/Song'
