@@ -33,9 +33,7 @@ const PanelTop = (props) => {
   return (
     <div className="border-bottom d-flex justify-content-between align-items-center" style={{}}>
       <div>
-        <button className='btn btn-sm btn-primary m-1 ms-2'>
-          <Link to={`/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
-        </button>
+        <Link className='btn btn-sm btn-primary m-1 ms-2' to={`/`}>Home</Link>
         <button className={`btn btn-sm border border-secondary m-1 shadow-none ${successMessage}`} onClick={() => updateScoreAPI()}>
           <Icon.Save className='icon' size={16} />
         </button>
