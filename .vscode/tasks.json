@@ -1,0 +1,43 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "start react",
+      "type": "shell",
+      "options": {
+        "cwd": "client"
+      },
+      "command": "npm start",
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "group": "groupA"
+      }
+    },
+    {
+      "label": "run server",
+      "type": "shell",
+      "options": {
+        "cwd": "server"
+      },
+      "command": "nodemon start",
+      "presentation": {
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "group": "groupA"
+      }
+    },
+    {
+      "label": "run",
+      "dependsOn": [
+        "start react",
+        "run server"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
