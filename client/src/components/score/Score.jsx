@@ -6,7 +6,7 @@ import TimeSig from './TimeSig'
 import BarLine from './BarLine'
 
 const Score = (props) => {
-  const { measures, staves, symbols, setSelection, clef } = props
+  const { measures, staves, symbols, selection, setSelection, setInspectorVisible, clef } = props
   
   return (
     // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2976.38 4209.45">
@@ -23,13 +23,13 @@ const Score = (props) => {
         {/* render notes */}
         { measures.map((measure, mIdx) => {
           // return <Measure key={measure.number} measure={measure} />
-          return measure.notes.map((note, nIdx) => <Note key={`${mIdx}_${nIdx}`} note={note} id={{measure: mIdx, note: nIdx}} setSelection={setSelection} clef={clef} />)
+          return measure.notes.map((note, nIdx) => <Note key={`${mIdx}_${nIdx}`} note={note} id={{measure: mIdx, note: nIdx}} selection={selection} setSelection={setSelection} setInspectorVisible={setInspectorVisible} clef={clef} />)
         })}
 
         {/* render symbols */}
         { symbols.map(symbol => {
-          if (symbol.type==='clef') return <Clef key={symbol.key} data={symbol.data} setSelection={setSelection} />
-          else if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} setSelection={setSelection} />
+          if (symbol.type==='clef') return <Clef key={symbol.key} data={symbol.data} selection={selection} setSelection={setSelection} setInspectorVisible={setInspectorVisible} />
+          else if (symbol.type==='timeSig') return <TimeSig key={symbol.key} data={symbol.data} selection={selection} setSelection={setSelection} setInspectorVisible={setInspectorVisible} />
           else if (symbol.type==='barLine') return <BarLine key={symbol.key} data={symbol.data} setSelection={setSelection} />
         }) }
         

@@ -41,8 +41,9 @@ const ScoreEdit = () => {
   const [keyboardWidth, setKeyboardWidth] = useState(5/4)
   const [newNote, setNewNote] = useState({type: 'quarter'})
   const [notePosition, setNotePosition] = useState({position: 'end'})
-  const [selection, setSelection] = useState({id: {measure: 0, note: 0}})
+  const [selection, setSelection] = useState({})
   const [pianoVisible, setPianoVisible] = useState(true)
+  const [inspectorVisible, setInspectorVisible] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
 
   const updateScoreAPI = () => {
@@ -95,22 +96,21 @@ const ScoreEdit = () => {
           <div className="d-flex justify-content-center" style={{flex: '1', overflow:'auto', background:'#315fa3'}}>
             <div style={{width: '100%', padding:'20px 25px'}}>
               <div style={{margin:'0 auto', width:`${14*zoom}px`, background: 'white', boxShadow: '0px 0px 12px 10px rgba(0, 0, 0, 0.25)'}}>
-                <Score measures={measures} staves={staves} symbols={symbols} setSelection={setSelection} clef={clef} />
+                <Score measures={measures} staves={staves} symbols={symbols} selection={selection} setSelection={setSelection} setInspectorVisible={setInspectorVisible} clef={clef} />
               </div>
             </div>
           </div>
 
           {/* right panel */}
-          {selection.type!==undefined && <PanelRight selection={selection} setSelection={setSelection} appState={appState} measures={measures} document={document} documentReducer={documentReducer} />}
+          {inspectorVisible && <PanelRight selection={selection} setSelection={setSelection} appState={appState} measures={measures} setInspectorVisible={setInspectorVisible} document={document} documentReducer={documentReducer} />}
         </div>
 
         {/* bottom panel */}
         {pianoVisible &&
-          <div className="border-top" style={{width: '100%', overflowX: 'auto'}}>
-            <div className="" style={{width: '100%'}}>
-              <div style={{margin: '0 auto', width:`${keyboardWidth*keyboardZoom*10}px`}}><Keyboard appState={appState} placeNoteCallback={placeNoteCallback} />
+          <div className="border-top text-center" style={{width: '100%', overflowX: 'auto'}}>
+              <div className="text-center" style={{margin: '0 auto'}}>
+                <Keyboard appState={appState} placeNoteCallback={placeNoteCallback} />
               </div>
-            </div>
           </div>
         }
     </div>

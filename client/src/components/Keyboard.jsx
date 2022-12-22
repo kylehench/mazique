@@ -16,7 +16,7 @@ const { newNote, keyboardZoom } = appState
   const keyScale = keyboardZoom/100
   const whiteKeyStyle = {
     height:`${keyScale*105}px`,
-    width:`${keyScale*35.3}px`,
+    width:`${keyScale*35}px`,
   }
   const blackKeyStyle = {
     height:`${keyScale*65}px`,
@@ -34,7 +34,7 @@ const { newNote, keyboardZoom } = appState
   }
 
   return (
-    <div className="d-flex" style={{}}>
+    <div className="d-inline-flex">
       { octaves.map((octave, octIdx) => {
         return keys.map((key, keyIdx) => {
           const whiteKey = (key.length===1)
