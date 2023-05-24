@@ -1,5 +1,5 @@
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { Routes, Route } from 'react-router-dom'
+// import axios from 'axios'
 
 import Songs from "./views/Songs"
 import SongsNew from './views/SongsNew'
@@ -8,27 +8,24 @@ import Song from './views/Song'
 
 import ScoreEdit from './views/ScoreEdit'
 
-// import UserList from './views/UserList'
-// import LoginForm from './views/LoginForm'
-
+import './styles/App.css'
 
 function App() {
-  const navigate = useNavigate()
   
-  const logout = () => {
-    axios.post('http://localhost:8000/api/logout',
-    {},
-    // need to send cookie in request so the server can clear it
-    {withCredentials: true}) 
-    .then(res => {
-      console.log(res)
-        navigate('/')
-      })
-      .catch(err => console.log(err))
-  }
-  
+  // const logout = () => {
+  //   axios.post('http://localhost:8000/api/logout',
+  //   {},
+  //   // need to send cookie in request so the server can clear it
+  //   {withCredentials: true}) 
+  //   .then(res => {
+  //     console.log(res)
+  //       navigate('/')
+  //     })
+  //     .catch(err => console.log(err))
+  // }
+
   return (
-    <div>
+    <>
       <Routes>
         <Route path="/" element={<Songs />} />
         <Route path="/songs" element={<Songs />} />
@@ -40,8 +37,8 @@ function App() {
         {/* <Route path="/users" element={<UserList />} />
         <Route path="/login" element={<LoginForm />} /> */}
       </Routes>
-    </div>
-  );
+    </>
+  )
 }
 
-export default App;
+export default App

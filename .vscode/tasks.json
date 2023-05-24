@@ -9,7 +9,7 @@
       "options": {
         "cwd": "client"
       },
-      "command": "npm start",
+      "command": "npm run dev",
       "presentation": {
         "reveal": "always",
         "focus": false,
