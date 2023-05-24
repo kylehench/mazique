@@ -7,13 +7,13 @@ const Songs = () => {
   const [songs, setSongs] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/songs')
+    axios.get(`${import.meta.env.VITE_SERVER_URI}/api/songs`)
       .then(res => setSongs(res.data))
       .catch(err => console.log(err))
     },[])
     
   const deleteSong = (_id) => {
-    axios.delete(`http://localhost:8000/api/songs/${_id}`)
+    axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/songs/${_id}`)
       .then(res => setSongs(songs.filter(song => song._id!==_id)))
       .catch(err => console.log(err))
   }

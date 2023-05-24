@@ -8,7 +8,7 @@ const Song = () => {
   const navigate = useNavigate()
   
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/songs/${id}`)
+    axios.get(`${import.meta.env.VITE_SERVER_URI}/api/songs/${id}`)
     .then(res => setSong(res.data))
     .catch(err => console.log(err))
   }, [])

@@ -9,7 +9,7 @@ const SongsNew = () => {
   const navigate = useNavigate()
 
   const createSong = () => {
-    axios.post('http://localhost:8000/api/songs', song)
+    axios.post(`${import.meta.env.VITE_SERVER_URI}/api/songs`, song)
       .then(res => {
         setValidationErrors({})
         navigate('/songs')

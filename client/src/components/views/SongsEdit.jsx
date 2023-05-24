@@ -10,13 +10,13 @@ const SongsEdit = () => {
   const { id } = useParams()
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/songs/${id}`)
+    axios.get(`${import.meta.env.VITE_SERVER_URI}/api/songs/${id}`)
       .then(res => setSong({...song, ...res.data}))
       .catch(err => console.log(err))
   },[])
 
   const updateSong = () => {
-    axios.put(`http://localhost:8000/api/songs/${id}`, song)
+    axios.put(`${import.meta.env.VITE_SERVER_URI}/api/songs/${id}`, song)
       .then(res => {
         setValidationErrors({})
         navigate('/songs')

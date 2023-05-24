@@ -8,14 +8,14 @@ const UserList = () => {
   const navigate = useNavigate()
 
   const getLoggedInUser = () => {
-    axios.get('http://localhost:8000/api/users',
+    axios.get(`${import.meta.env.VITE_SERVER_URI}/api/users`,
       {withCredentials: true})
     .then(res => console.log(res))
     .catch(err => console.log(err))
   }
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/users',
+    axios.get(`${import.meta.env.VITE_SERVER_URI}/api/users`,
       {withCredentials: true})
     .then(res => {
       setUsers(res.data)

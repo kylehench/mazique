@@ -13,7 +13,7 @@ import './styles/App.css'
 function App() {
   
   // const logout = () => {
-  //   axios.post('http://localhost:8000/api/logout',
+  // axios.post(`${import.meta.env.VITE_SERVER_URI}/api/logout`,
   //   {},
   //   // need to send cookie in request so the server can clear it
   //   {withCredentials: true}) 

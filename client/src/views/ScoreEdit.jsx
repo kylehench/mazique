@@ -47,7 +47,7 @@ const ScoreEdit = () => {
   const [successMessage, setSuccessMessage] = useState('')
 
   const updateScoreAPI = () => {
-    axios.put(`http://localhost:8000/api/scores/${id}`, {document: document})
+    axios.put(`${import.meta.env.VITE_SERVER_URI}/api/scores/${id}`, {document: document})
       .then(res => {
         setSuccessMessage('btn-success')
         setTimeout(() => {
@@ -63,7 +63,7 @@ const ScoreEdit = () => {
   const documentReducer = (action) => DocumentReducer(action, documentState, appState)
   
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/scores/${id}`)
+    axios.get(`${import.meta.env.VITE_SERVER_URI}/api/scores/${id}`)
       .then(res => {
         if (!res.data.document[0].timeSig) res.data.document[0].timeSig = ReferenceDocument[0].timeSig
         if (!res.data.document[0].clef) res.data.document[0].clef = ReferenceDocument[0].clef
