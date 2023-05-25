@@ -1,5 +1,5 @@
 # Deployment - update client
-Navigate to `/mazique/client` folder
+Navigate to `/mazique/client`
 ```
 git pull
 npm run build
