@@ -1,7 +1,5 @@
 # Deployment - update client
-```
 cd [/mazique/client folder]
-```
 ```
 git pull
 npm run build
