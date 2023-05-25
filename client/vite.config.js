@@ -15,7 +15,7 @@ export default defineConfig({
     proxy: {
       [`${VITE_URL_BASENAME}/api`]: {
         target: 'http://localhost:8000/',
-        rewrite: (path) => path.replace(new RegExp(VITE_URL_BASENAME), '')
+        rewrite: (path) => path.replace(RegExp(VITE_URL_BASENAME), '')
       }
     }
   }
