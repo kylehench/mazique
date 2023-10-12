@@ -18,7 +18,7 @@
       }
     },
     {
-      "label": "run server",
+      "label": "start server",
       "type": "shell",
       "options": {
         "cwd": "server"
@@ -32,10 +32,10 @@
       }
     },
     {
-      "label": "run",
+      "label": "start app",
       "dependsOn": [
         "start react",
-        "run server"
+        "start server"
       ],
       "problemMatcher": []
     }
